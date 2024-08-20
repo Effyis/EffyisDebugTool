@@ -1,0 +1,20 @@
+Debug Tool build commands (change version if needed)
+
+docker build -t harbor.sgdctroy.net/socialgist-dev/effyis-debug-tool:v1.0 .
+
+---------------------------------------------------------------
+
+docker push harbor.sgdctroy.net/socialgist-dev/effyis-debug-tool:v1.0
+
+*** View all deployments
+kubectl get all -n sg-debug-tool
+*** Create
+kubectl create -f deployment/deployment.yaml -n sg-debug-tool
+kubectl create -f deployment/service.yaml -n sg-debug-tool
+kubectl create -f deployment/ingress.yaml -n sg-debug-tool
+*** Stop/Delete
+kubectl delete deployment sg-debug-tool -n sg-debug-tool
+kubectl delete svc sg-debug-tool-service -n sg-debug-tool
+kubectl delete ingress sg-debug-tool-ingress -n sg-debug-tool
+*** Restart
+kubectl rollout restart deployment sg-debug-tool -n sg-debug-tool
