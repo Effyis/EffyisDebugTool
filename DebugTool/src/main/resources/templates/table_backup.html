@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Charts Table Example</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['table'] });
+        google.charts.setOnLoadCallback(drawTable1);
+
+        function drawTable() {
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Name');
+            data.addColumn('number', 'Age');
+            data.addColumn('boolean', 'Is Student');
+            data.addRows([
+                ['Alice', 25, true],
+                ['Bob', 30, false],
+                ['Charlie', 22, true],
+                ['David', 35, false]
+            ]);
+
+            var table = new google.visualization.Table(document.getElementById('table_div'));
+            table.draw(data, {showRowNumber: true});
+        }
+        
+        
+        function drawTable1() {
+
+			var jsonData =
+			 {"cols":[{"id":"year","label":"Year","type":"string"},{"id":"test111","label":"test111","type":"number"},{"id":"test222","label":"test222","type":"number"},{"id":"test333","label":"test333","type":"number"}],"rows":[{"c":[{"v":"18:50"},{"v":145},{"v":203},{"v":87}]},{"c":[{"v":"18:55"},{"v":150},{"v":210},{"v":90}]},{"c":[{"v":"19:00"},{"v":145},{"v":203},{"v":87}]},{"c":[{"v":"19:05"},{"v":145},{"v":203},{"v":87}]},{"c":[{"v":"19:10"},{"v":145},{"v":203},{"v":87}]},{"c":[{"v":"19:15"},{"v":145},{"v":203},{"v":87}]},{"c":[{"v":"19:20"},{"v":145},{"v":203},{"v":87}]},{"c":[{"v":"19:25"},{"v":145},{"v":203},{"v":87}]},{"c":[{"v":"19:30"},{"v":145},{"v":203},{"v":87}]},{"c":[{"v":"19:35"},{"v":145},{"v":203},{"v":87}]},{"c":[{"v":"19:40"},{"v":145},{"v":203},{"v":87}]},{"c":[{"v":"19:45"},{"v":120},{"v":168},{"v":72}]}]};
+/*{
+    cols: [
+        { id: 'Name', label: 'Name', type: 'string' },
+        { id: 'Age', label: 'Age', type: 'number' },
+        { id: 'IsStudent', label: 'Is Student', type: 'boolean' }
+    ],
+    rows: [
+        { c: [{ v: 'Alice' }, { v: 25 }, { v: true }] },
+        { c: [{ v: 'Bob' }, { v: 30 }, { v: false }] },
+        { c: [{ v: 'Charlie' }, { v: 22 }, { v: true }] },
+        { c: [{ v: 'David' }, { v: 325 }, { v: false }] }
+    ]
+};*/
+
+alert(jsonString);
+// Convert jsonData to a string
+var jsonString = JSON.stringify(jsonData);
+alert(jsonString);
+// Initialize a DataTable from the JSON string
+var data = new google.visualization.DataTable(jsonString);        
+
+            var table = new google.visualization.Table(document.getElementById('table_div'));
+            table.draw(data, {showRowNumber: true});
+
+        
+}        
+    </script>
+</head>
+<body>
+    <div id="table_div"></div>
+</body>
+</html>

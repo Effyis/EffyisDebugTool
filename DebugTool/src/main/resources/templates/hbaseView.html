@@ -1,0 +1,60 @@
+<html>
+<head>
+    <title>Google Charts Line Chart Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+
+ 		const urlParams = new URLSearchParams(window.location.search);
+        google.charts.load('current', { 'packages': ['table'] });
+        google.charts.setOnLoadCallback(fetchAndDrawChart);
+
+
+        function fetchAndDrawChart() {
+            // Fetch JSON data from the URL using Ajax
+            $.ajax({
+                url: 'hbaseviews' + window.location.search, // replace with the actual URL
+                dataType: 'json',
+                success: function (jsonData) {
+// 					var jsonString = JSON.stringify(jsonData);
+//    				alert(jsonString);                    
+    				drawChart(jsonData);
+                },
+                error: function () {
+                    console.error('Error fetching JSON data');
+                }
+            });
+        }
+
+        function drawChart(jsonData) {
+            // Create the DataTable
+            var data = new google.visualization.DataTable(jsonData);
+//            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+//            chart.draw(data, options);
+            
+//			var data = new google.visualization.DataTable(jsonDataObj);        
+            var table = new google.visualization.Table(document.getElementById('chart_div'));
+            table.draw(data, {showRowNumber: true});
+            
+            
+        }
+    </script>
+</head>
+<body>
+	
+<table border=0 width=80%>
+  <tr>
+    <td align="left"><a href="youtube_index"><img src="socialgist_youtube.jpg" alt="DT Youtube Home"  height=20  ></a></td>
+  </tr>
+</table>
+	
+	<hr>
+	
+	
+	
+	
+	
+    <div id="chart_div" style="width: 100%; height: 100vh;"></div>
+</body>
+</html>

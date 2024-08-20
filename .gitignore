@@ -4,6 +4,11 @@
 # Log file
 *.log
 
+# folders
+*/target/
+*/.settings/
+*/.mvn/
+
 # BlueJ files
 *.ctxt
 
@@ -17,7 +22,9 @@
 *.ear
 *.zip
 *.tar.gz
+*.tar
 *.rar
+*.gz
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*

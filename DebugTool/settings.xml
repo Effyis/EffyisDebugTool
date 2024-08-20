@@ -1,0 +1,17 @@
+<settings>
+<mirrors>
+        <mirror>
+            <id>effyis</id>
+            <name>Local Repo</name>
+            <url>http://nexus.sgdctroy.net:8080/repository/effyis/</url>
+            <mirrorOf>external:http:*</mirrorOf>
+        </mirror>
+    </mirrors>
+  <servers>
+    <server>
+      <id>effyis</id>
+      <username>isafronov</username>
+      <password>{InWO/5nsR/kHmRavkBX3WWUm/ULPKwPOzfbzzbQm0zc=}</password>
+    </server>
+  </servers>
+</settings>

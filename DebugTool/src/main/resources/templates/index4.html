@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Charts Table Example</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['table'] });
+        google.charts.setOnLoadCallback(drawTable);
+
+        function drawTable() {
+            var data = new google.visualization.DataTable();
+            data.addColumn('string', 'Name');
+            data.addColumn('number', 'Age');
+            data.addColumn('boolean', 'Is Student');
+            data.addRows([
+                ['Alice', 25, true],
+                ['Bob', 30, false],
+                ['Charlie', 22, true],
+                ['David', 35, false]
+            ]);
+
+            var table = new google.visualization.Table(document.getElementById('table_div'));
+            table.draw(data, {showRowNumber: true});
+        }
+    </script>
+</head>
+<body>
+    <div id="table_div"></div>
+</body>
+</html>

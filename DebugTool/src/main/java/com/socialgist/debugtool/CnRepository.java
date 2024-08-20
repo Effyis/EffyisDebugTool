@@ -1,0 +1,55 @@
+package com.socialgist.debugtool;
+
+import javax.annotation.PostConstruct;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import com.socialgist.gvp.utils.DictionaryContainer;
+import com.socialgist.gvp.utils.HBaseContainer;
+import com.socialgist.gvp.utils.MySQLContainer;
+import com.socialgist.gvp.utils.TokensPoolContainer;
+
+@Component
+public class CnRepository {
+
+	@Value("${youtube_token:}")   
+	String youtube_token;
+	
+	@Autowired
+	MySQLContainer mySQLContainer;
+	@Autowired
+	HBaseContainer hbaseContainer;
+	@Autowired
+	DictionaryContainer dictionaryContainer;
+	@Autowired
+	TokensPoolContainer tokensPoolContainer;
+
+	@Autowired
+	MySQLUtilsContainer mySQLUtilsContainer;
+	@Autowired
+	HttpContainer httpContainer;
+	
+	boolean initSuccess = true;  
+
+    private static Logger LOG = LoggerFactory.getLogger(CnRepository.class);
+    
+    @PostConstruct
+    public void init() throws Exception {
+  		mySQLContainer.init();
+  		hbaseContainer.init();
+  		dictionaryContainer.init();
+  		tokensPoolContainer.init();
+  		
+  		mySQLUtilsContainer.init();
+  		httpContainer.init();  		
+	    LOG.info("Repository initialization - ok");
+	}
+
+	public void shutdown() {
+	}
+	
+}

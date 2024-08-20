@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AJAX Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Perform an AJAX request to fetch the server-side variable
+            
+$.ajax({
+    url: 'http://localhost:8080/all_tokens', // Adjust the URL with the correct path
+    method: 'GET',
+    dataType: 'text',
+    success: function(response) {
+        // Display the response in a div with id "result"
+        $('#result').text(response);
+    },
+    error: function() {
+        $('#result').text('Error fetching server data.');
+    }
+});            
+            
+            
+            
+        });
+    </script>
+</head>
+<body>
+	
+	    <h1>String from Controller:</h1>
+    <p th:text="${serverData}">Default Message</p>
+
+	
+    <h1>AJAX Example</h1>
+    <div id="result">Fetching server data...</div>
+</body>
+</html>

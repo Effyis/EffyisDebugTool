@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Charts Line Chart Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+	var jsonData = null;
+	var title = null;
+
+    $(document).ready(function() {
+//        alert("ccc");        
+        jsonData = `[[${message}]]`;
+		alert(jsonData);
+		jsonData = jsonData.replace(/&quot;/g, '"');
+		
+        title = `[[${title}]]`;
+
+//		alert(jsonData);
+    });
+
+        google.charts.load('current', { 'packages': ['corechart'] });
+//        google.charts.load('current', { 'packages': ['table'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+/*
+            jsonData = `{
+                "cols": [  
+                    {"id": "year", "label": "Year", "type": "string"},
+                    {"id": "sales", "label": "Sales", "type": "number"}
+                ],
+                "rows": [
+                    {"c": [{"v": "2010"}, {"v": 2}]},
+                    {"c": [{"v": "2011"}, {"v": 1}]},
+                    {"c": [{"v": "2012"}, {"v": 3}]}
+                ]
+            }`;
+*/
+
+            // Parse the JSON string into a JavaScript object
+            var jsonDataObj = JSON.parse(jsonData);
+
+            // Create the DataTable
+            var data = new google.visualization.DataTable(jsonDataObj);
+
+            var options = {
+                title: 'Chart of ' + title,
+                curveType: 'linear',
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+
+//            var table = new google.visualization.Table(document.getElementById('table_div'));
+//            table.draw(data, {showRowNumber: true});
+
+        }
+
+		
+    </script>
+</head>
+<body>
+    <div id="chart_div" style="width: 100%; height: 100vh;"></div>
+</body>
+</html>

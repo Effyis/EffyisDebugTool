@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Google Chart Example</title>
+    
+    <!-- Include Google Charts library -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
+    <script type="text/javascript" th:inline="javascript">
+        /*<![CDATA[*/
+//        var jsonData = /*[(${jsonData})]*/;
+
+        var chartData = new google.visualization.DataTable(jsonData);
+
+        var options = {
+            chart: {
+                title: 'My Chart',
+            }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('chart_div'));
+        chart.draw(chartData, google.charts.Bar.convertOptions(options));
+        /*]]>*/
+    </script>
+</head>
+<body>
+    <div id="chart_div"></div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Index Page</title>
+</head>
+<body>
+    <h2>Debug Tools:</h2>
+    <hr>
+    VK Stats:  
+     <ul>
+    	<li><a href="/vk_stats">/vk_stats</a> 	</li>
+    </ul>
+    
+    VK API: 
+    
+     <ul>
+    	<li><a href="/channel?channel_id=">/channel</a> 	</li>
+    	<li><a href="/playlist?channel_id=">/playlist</a>       </li>
+    	<li><a href="/video?video_id=">/video</a>               </li>
+    </ul>
+    
+
+	Collector quality check
+	
+     <ul>
+    	<li><a href="/channel_list?channel_id=">Channel</a> </li>
+    	<li><a href="/video_list?/video_id=">Video</a> 		</li>
+    </ul>
+    	
+	Premium stats 
+    	
+     <ul>
+    	<li><a href="/dbView?view=mqu&params=10">Most quota used</a> </li>
+    	<li><a href="/dbView?view=rs&params=0">Rules started</a>     </li>
+    	<li><a href="/dbView?view=ps&params=0">Premium process current status</a>    </li>
+    </ul>
+
+	Tokens usage 
+
+     <ul>
+    	<li><a href="/tokensView?type=3">Premium </a> </li>
+    	<li><a href="/tokensView?type=4">Generic keywords</a> </li>
+    	<li><a href="/tokensView?type=5">Channels recheck</a> </li>
+    </ul>
+
+	Proxy check 
+
+     <ul>
+    	<li><a href="/check_proxy?proxyHost=&proxyPort=">Check proxy IP</a> </li>
+    </ul>
+
+	HBase view 
+    	
+     <ul>
+    	<li><a href="/hbaseView?view=CH_LIST&params=ytc.0000">channels (ytc.0000)</a> </li>
+    	<li><a href="/hbaseView?view=V_LIST&params=youtube.0000">videos (youtube.0000)</a> </li>
+    </ul>
+    	
+    
+</body>
+</html>

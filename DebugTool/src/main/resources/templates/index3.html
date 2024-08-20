@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Charts Line Chart Example</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+		const aaa = 10;
+
+        function drawChart() {
+            // Your data as a JSON string
+            var jsonData = `{
+                "cols": [  
+                    {"id": "year", "label": "Year", "type": "string"},
+                    {"id": "sales", "label": "Sales", "type": "number"}
+                ],
+                "rows": [
+                    {"c": [{"v": "2010"}, {"v": 1}]},
+                    {"c": [{"v": "2011"}, {"v": 2}]},
+                    {"c": [{"v": "2012"}, {"v": 3}]},
+                    {"c": [{"v": "2013"}, {"v": 4}]},
+                    {"c": [{"v": "2014"}, {"v": 5}]},
+                    {"c": [{"v": "2015"}, {"v": 6}]},
+                    {"c": [{"v": "2016"}, {"v": 5}]},
+                    {"c": [{"v": "2017"}, {"v": 6}]},
+                    {"c": [{"v": "2018"}, {"v": 7}]},
+                    {"c": [{"v": "2019"}, {"v": 8}]},
+                    {"c": [{"v": "2018"}, {"v": 9}]},
+                    {"c": [{"v": "2020"}, {"v": 1}]},
+                    {"c": [{"v": "2021"}, {"v": 2}]},
+                    {"c": [{"v": "2022"}, {"v": 3}]},
+                    {"c": [{"v": "2023"}, {"v": 4}]},
+                    {"c": [{"v": "2024"}, {"v": 5}]},
+                    {"c": [{"v": "2015"}, {"v": 6}]},
+                    {"c": [{"v": "2014"}, {"v": 5}]},
+                    {"c": [{"v": "2015"}, {"v": 6}]},
+                    {"c": [{"v": "2016"}, {"v": 7}]},
+                    {"c": [{"v": "2017"}, {"v": 8}]},
+                    {"c": [{"v": "2018"}, {"v": 9}]},
+                    {"c": [{"v": "2010"}, {"v": 1}]},
+                    {"c": [{"v": "2011"}, {"v": 2}]},
+                    {"c": [{"v": "2012"}, {"v": 3}]},
+                    {"c": [{"v": "2013"}, {"v": 4}]},
+                    {"c": [{"v": "2014"}, {"v": 5}]},
+                    {"c": [{"v": "2015"}, {"v": 6}]},
+                    {"c": [{"v": "2014"}, {"v": 5}]},
+                    {"c": [{"v": "2015"}, {"v": 6}]},
+                    {"c": [{"v": "2016"}, {"v": 7}]},
+                    {"c": [{"v": "2017"}, {"v": 8}]},
+                    {"c": [{"v": "2018"}, {"v": 9}]},
+                    {"c": [{"v": "2018"}, {"v": 9}]},
+                    {"c": [{"v": "2019"}, {"v": ${aaa}}]}
+                ]
+            }`;
+
+            // Parse the JSON string into a JavaScript object
+            var jsonDataObj = JSON.parse(jsonData);
+
+            // Create the DataTable
+            var data = new google.visualization.DataTable(jsonDataObj);
+
+            var options = {
+                title: 'Company Performance',
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+    </script>
+</head>
+<body>
+    <div id="chart_div" style="width: 100%; height: 100vh;"></div>
+</body>
+</html>

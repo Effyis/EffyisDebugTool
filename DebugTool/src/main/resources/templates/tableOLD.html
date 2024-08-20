@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Charts Line Chart Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+	var jsonData = null;
+	var title = null;
+
+    $(document).ready(function() {
+//        alert("ccc");        
+        jsonData = `[[${message}]]`;
+		jsonData = jsonData.replace(/&quot;/g, '"');
+		
+        title = `[[${title}]]`;
+
+//		alert(jsonData);
+    });
+
+//        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.load('current', { 'packages': ['table'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+// Convert jsonData to a string
+//var jsonString = JSON.stringify(jsonData);
+//alert(jsonString);
+// Initialize a DataTable from the JSON string
+/*            // Parse the JSON string into a JavaScript object
+            var jsonDataObj = JSON.parse(jsonData);
+            // Create the DataTable
+            var data = new google.visualization.DataTable(jsonDataObj);
+            var options = {
+                title: 'Chart of ' + title,
+                curveType: 'linear',
+                legend: { position: 'bottom' }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+*/
+
+			alert(jsonData);
+
+            // Parse the JSON string into a JavaScript object
+            var jsonDataObj = JSON.parse(jsonData);
+			alert(jsonData);
+
+			var data = new google.visualization.DataTable(jsonDataObj);        
+            var table = new google.visualization.Table(document.getElementById('chart_div'));
+            table.draw(data, {showRowNumber: true});
+
+
+
+//            var table = new google.visualization.Table(document.getElementById('table_div'));
+//            table.draw(data, {showRowNumber: true});
+
+        }
+
+		
+    </script>
+</head>
+<body>
+    <div id="chart_div" style="width: 100%; height: 100vh;"></div>
+</body>
+</html>

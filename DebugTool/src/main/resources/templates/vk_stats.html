@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Video Page</title>
+    
+    
+  <style>
+        body {
+            font-family: 'Arial', sans-serif; /* Set the desired font family */
+            font-size: 12px; /* Set the desired font size */
+        }
+        h1 {
+            color: #333; /* Example: Set color for heading 1 */
+        }
+        p {
+            line-height: 1.5; /* Example: Set line height for paragraphs */
+        }
+        
+     table {
+            border-collapse: collapse; /* Collapse borders into a single border */
+            width: 100%; /* Make the table take up 100% of the container */
+        }
+
+        td {
+            border: 1px solid black; /* Add a border to each cell */
+            padding: 10px; /* Add padding for spacing within each cell */
+            vertical-align: top; /* Align content at the top of each cell */
+        }        
+        
+    </style>    
+    
+</head>
+</b>
+    <h2>YouTube Video Projects:</h2>
+    <hr>
+
+  <form id="video">
+
+Enviroment:
+	<select id="env">
+        <option value="dev">DEV</option>
+        <option value="prod">PROD</option>
+	</select>   
+	&nbsp;&nbsp;&nbsp;&nbsp; 
+Project:    
+	<select id="project">
+        <option value="23">23 - Youtube Premium SUBSCRIPTIONS 	</option>
+        <option value="24">24 - Youtube Generic KEYWORDS         </option>
+        <option value="25">25 - Youtube Generic CHANNELS Recheck </option>
+        <option value="26">26 - Youtube Generic VIDEOS Recheck   </option>
+        <option value="27">27 - Youtube Premium NEWS   			</option>
+	</select>    
+&nbsp;&nbsp;&nbsp;&nbsp;	
+Time period:
+	<select id="time_period">
+		<option value="LAST_HOUR">  LAST_HOUR   </option>
+		<option value="LAST_DAY">   LAST_DAY    </option>
+		<option value="LAST_WEEK">  LAST_WEEK   </option>
+		<option value="LAST_MONTH"> LAST_MONTH  </option>
+		<option value="LAST_YEAR">  LAST_YEAR   </option>
+		<option value="FOREVER">    FOREVER     </option>
+	</select>
+    
+<br>
+<br>
+<br>
+
+ <table border="1">
+        <tr>
+            <td>
+
+ <input type="checkbox" id="CONTROLLER_REGUEST          " name="STATS" value="CONTROLLER_REGUEST        "> <label for="CONTROLLER_REGUEST        ">CONTROLLER_REGUEST(1, "Controller requests")                 </label><br>
+<b> Youtube stats</b><br>                                                                                                                                                                                              
+ <input type="checkbox" id="SENT_VIDEOS                 " name="STATS" value="SENT_VIDEOS"              > <label for="SENT_VIDEOS               ">SENT_VIDEOS(201, "")                                         </label><br>
+ <input type="checkbox" id="SENT_COMMENTS               " name="STATS" value="SENT_COMMENTS"            > <label for="SENT_COMMENTS             ">SENT_COMMENTS(202, "")                                       </label><br>
+ <input type="checkbox" id="SENT_STATS                  " name="STATS" value="SENT_STATS"               > <label for="SENT_STATS                ">SENT_STATS(203, "")                                          </label><br>
+<b> Youtube network stats</b><br>                                                                                                                                                                                      
+ <input type="checkbox" id="API_SEARCH_CALLS            " name="STATS" value="API_SEARCH_CALLS          "> <label for="API_SEARCH_CALLS          ">API_SEARCH_CALLS(200, "API Search Requests")                 </label><br>
+ <input type="checkbox" id="API_CHANNELS_CALLS          " name="STATS" value="API_CHANNELS_CALLS        "> <label for="API_CHANNELS_CALLS        ">API_CHANNELS_CALLS(201, "API Channels Requests")             </label><br>
+ <input type="checkbox" id="API_PLAYLISTITEMS_CALLS     " name="STATS" value="API_PLAYLISTITEMS_CALLS   "> <label for="API_PLAYLISTITEMS_CALLS   ">API_PLAYLISTITEMS_CALLS(202, "API PlayListItem Requests")    </label><br>
+ <input type="checkbox" id="API_VIDEO_CALLS             " name="STATS" value="API_VIDEO_CALLS           "> <label for="API_VIDEO_CALLS           ">API_VIDEO_CALLS(20, "API Video Requests")                    </label><br>
+ <input type="checkbox" id="API_COMMENTTHREADS_CALLS    " name="STATS" value="API_COMMENTTHREADS_CALLS  "> <label for="API_COMMENTTHREADS_CALLS  ">API_COMMENTTHREADS_CALLS(20, "API CommentThreads Requests")  </label><br>
+ <input type="checkbox" id="API_COMMENTS_CALLS          " name="STATS" value="API_COMMENTS_CALLS        "> <label for="API_COMMENTS_CALLS        ">API_COMMENTS_CALLS(20, "API Comments Requests")              </label><br>
+ <input type="checkbox" id="API_VIDEOCATEGORIES_CALLS   " name="STATS" value="API_VIDEOCATEGORIES_CALLS "> <label for="API_VIDEOCATEGORIES_CALLS ">API_VIDEOCATEGORIES_CALLS(20, "API VideoCategories Requests")</label><br>
+
+</td> 
+ <td>
+
+<b> Network stats</b><br>                                                                                                                                                                                              
+ <input type="checkbox" id="HTTP_CALLS                  " name="STATS" value="HTTP_CALLS                "> <label for="HTTP_CALLS                ">HTTP_CALLS(101, "Htpp calls")                                </label><br>
+ <input type="checkbox" id="HTTP_200_CALLS              " name="STATS" value="HTTP_200_CALLS            "> <label for="HTTP_200_CALLS            ">HTTP_200_CALLS(102, "200 Success htpp calls")                </label><br>
+<b> Common errors</b><br>                                                                                                                                                                                                
+ <input type="checkbox" id="UNKNOWN_ERROR               " name="STATS" value="UNKNOWN_ERROR             "> <label for="UNKNOWN_ERROR             ">UNKNOWN_ERROR(1000, "Unknown Error")                         </label><br>
+ <input type="checkbox" id="ERROR_HTTP                  " name="STATS" value="ERROR_HTTP                "> <label for="ERROR_HTTP                ">ERROR_HTTP(1001, "HTTP Error")                               </label><br>
+ <input type="checkbox" id="ERROR_BAD_JSON              " name="STATS" value="ERROR_BAD_JSON            "> <label for="ERROR_BAD_JSON            ">ERROR_BAD_JSON(1002, "Bad Json Error")                       </label><br>
+<b> Youtube errors</b><br>                                                                                                                                                                                               
+ <input type="checkbox" id="UNKNOWN_PROVIDER_ERROR      " name="STATS" value="UNKNOWN_PROVIDER_ERROR    "> <label for="UNKNOWN_PROVIDER_ERROR    ">UNKNOWN_PROVIDER_ERROR(1100, "Unknown Provider Error")       </label><br>
+ <input type="checkbox" id="ERROR_BACKEND               " name="STATS" value="ERROR_BACKEND             "> <label for="ERROR_BACKEND             ">ERROR_BACKEND(1101, "500/503 Backend Error")                 </label><br>
+ <input type="checkbox" id="ERROR_EMPTY_RESPONSE        " name="STATS" value="ERROR_EMPTY_RESPONSE      "> <label for="ERROR_EMPTY_RESPONSE      ">ERROR_EMPTY_RESPONSE(1102, "500 Empty Response")             </label><br>
+ <input type="checkbox" id="ERROR_PROCESSING_FAILURE    " name="STATS" value="ERROR_PROCESSING_FAILURE  "> <label for="ERROR_PROCESSING_FAILURE  ">ERROR_PROCESSING_FAILURE(1103, "400 Processing Failure")     </label><br>
+ <input type="checkbox" id="ERROR_RATE_LIMIT_EXCEEDED   " name="STATS" value="ERROR_RATE_LIMIT_EXCEEDED "> <label for="ERROR_RATE_LIMIT_EXCEEDED ">ERROR_RATE_LIMIT_EXCEEDED(1104, "429 Rate Limit Exceeded")   </label><br>
+ <input type="checkbox" id="ERROR_DAILY_LIMIT_EXCEEDED  " name="STATS" value="ERROR_DAILY_LIMIT_EXCEEDED"> <label for="ERROR_DAILY_LIMIT_EXCEEDED">ERROR_DAILY_LIMIT_EXCEEDED(1105, "403 Daily Limit Exceeded") </label><br>
+ <input type="checkbox" id="ERROR_QUOTA_EXCEEDED        " name="STATS" value="ERROR_QUOTA_EXCEEDED      "> <label for="ERROR_QUOTA_EXCEEDED      ">ERROR_QUOTA_EXCEEDED(1106, "403 Quota Exceeded");            </label><br>
+
+	</td> </tr>
+</table>    
+
+<button type="button" onclick="showCharts()">Open Chart for Selected Stats</button>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<button type="button" onclick="showChartsUrl()">Show Link</button>
+
+ <table border="1">
+        <tr>
+            <td>
+ <input type="checkbox" id="requestMessage       " name="STATS1" value="requestMessage"       > <label for="requestMessage       ">requestMessage       </label><br>
+ <input type="checkbox" id="server_name          " name="STATS1" value="server_name"          > <label for="server_name          ">server_name          </label><br>
+ <input type="checkbox" id="server_description   " name="STATS1" value="server_description"   > <label for="server_description   ">server_description   </label><br>
+</td> 
+ <td>
+ <input type="checkbox" id="ip                   " name="STATS1" value="ip"                   > <label for="ip                   ">ip                   </label><br>
+ <input type="checkbox" id="host_name            " name="STATS1" value="host_name"            > <label for="host_name            ">host_name            </label><br>
+ <input type="checkbox" id="start_time_UTC       " name="STATS1" value="start_time_UTC"       > <label for="start_time_UTC       ">start_time_UTC       </label><br>
+ <input type="checkbox" id="status       " name="STATS1" value="status"       > <label for="start_time_UTC       ">status       </label><br>
+	</td> </tr>
+</table>    
+
+<button type="button" onclick="showThreads()">Show Threads Stats for Selected Stats</button>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<button type="button" onclick="showThreadsUrl()">Show Link</button>
+
+</form>
+
+ <p>Url: <span id="selectedStats"></span></p>
+
+   <script>
+	   
+        function showChartsUrl() {
+			var url = buildChartsUrl();
+            document.getElementById('selectedStats').textContent = url;
+		}
+
+        function showThreadsUrl() {
+			var url = buildThreadsUrl();
+            document.getElementById('selectedStats').textContent = url;
+		}
+
+        function showCharts() {
+			var url = buildChartsUrl();
+			openLink(url);
+		}
+
+        function showThreads() {
+			var url = buildThreadsUrl();
+			openLink(url);
+		}
+
+	   	
+        function buildChartsUrl() {
+
+			var selectedEnv = document.getElementById('env').value;
+			var selectedProject = document.getElementById('project').value;
+			var selectedTimePeriod = document.getElementById('time_period').value;
+
+			var prefix = 'stats.gvp' + selectedProject + '.';
+            var selectedStats = [];
+            var checkboxes = document.getElementsByName('STATS');
+
+            checkboxes.forEach(function(checkbox) {
+                if (checkbox.checked) {
+                    selectedStats.push(prefix + checkbox.value);
+                }
+            });
+			var link =  'charts?' +  
+						'stats_ids=' + selectedStats.join(',') + 
+						'&period=' + selectedTimePeriod;   
+			return link;
+        }
+        
+        function buildThreadsUrl() {
+
+			var selectedEnv = document.getElementById('env').value;
+			var selectedProject = document.getElementById('project').value;
+			var selectedTimePeriod = document.getElementById('time_period').value;
+
+			//stats.gvp23.ck23.ckt
+			var prefix = 'stats.gvp' + selectedProject + '.ck';
+            var selectedStats = [];
+            var checkboxes = document.getElementsByName('STATS1');
+
+            checkboxes.forEach(function(checkbox) {
+                if (checkbox.checked) {
+                    selectedStats.push(checkbox.value);
+                }
+            });
+			var link =  'threads_stats?' +  
+						'stats_ids=' + selectedStats.join(',') + 
+						'&prefix=' + prefix;   
+			return link;
+        }
+        
+        function openLink(link) {
+ 			window.open(link, '_blank');        
+		}
+
+        function showLink(link) {
+			// Create an anchor element
+			var anchorElement = document.createElement('a');
+			// Set the href attribute to the link
+			anchorElement.href = link;
+			// Set the target attribute to open the link in a new tab
+			anchorElement.target = '_blank';
+			// Set the text content of the anchor (visible link text)
+			anchorElement.textContent = link;
+			// Get the element with ID 'selectedStats'
+			var selectedStatsElement = document.getElementById('selectedStats');
+			// Clear any existing content in the selectedStatsElement
+			selectedStatsElement.innerHTML = '';
+			// Append the anchor element to the selectedStatsElement
+			selectedStatsElement.appendChild(anchorElement);
+		}
+        
+    </script>
+
+
+<!--	Template
+ <input type="checkbox" id="" name="STATS" value=""> <label for=""></label><br>
+ <input type="checkbox" id="" name="STATS" value=""> <label for=""></label><br>
+ <input type="checkbox" id="" name="STATS" value=""> <label for=""></label><br>
+ <input type="checkbox" id="" name="STATS" value=""> <label for=""></label><br>
+-->	
+    
+</body>
+</html>
