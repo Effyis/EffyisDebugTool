@@ -172,7 +172,7 @@ public class ServiceController {
     	TreeMap<Long, GvpVideo> videos = youtubeContainer.readVideosForChannel(ghc.playlist_id);
    	 	
    	 	htmlTable.append("<table border=1 cellspacing=0 cellpadding=5>");
-   	 	htmlTable.append("<tr><th>Video Id</th><th>Created</th><th>Last Check</th><th>Comments</th><th>Comments Sent</th></tr>");
+   	 	htmlTable.append("<tr><th>Video Id</th><th>URL</th><th>Created</th><th>Last Check</th><th>Comments</th><th>Comments Sent</th></tr>");
      
    	 	for (Entry<Long, GvpVideo> entry : videos.entrySet()) {
    	 		Long video_id = entry.getKey();
@@ -180,8 +180,12 @@ public class ServiceController {
    	 		GvpVideo v2 = hbaseContainer.checkVideoForExistence(v1.video_id);
    	 		
    	 		htmlTable.append("<tr>");
-   	 	    String video_href = String.format("<a href='/video_list?video_id=%s'>%s</a>", v1.video_id, v1.video_id);
+   	 	    String video_href = String.format("<a target='_blank' href='/video_list?video_id=%s'>%s</a>", v1.video_id, v1.video_id);
    	 		htmlTable.append("<td>").append(video_href).append("</td>");
+   	 	    String url_href = String.format("<a target='_blank' href='https://www.youtube.com/watch?v=%s'>URL</a>", v1.video_id);
+   	 		htmlTable.append("<td>").append(url_href).append("</td>");
+   	 		
+   	 		
    	 		htmlTable.append("<td>").append(Instant.ofEpochSecond(v1.created_ts)).append("</td>");
    	 		htmlTable.append("<td align='right'>").append((v2==null)?"---" : Instant.ofEpochSecond(v2.lastCheck_ts)).append("</td>");
    	 		htmlTable.append("<td align='right'>").append((v2==null)?"---" : v2.commentsCount).append("</td>");
@@ -211,16 +215,17 @@ public class ServiceController {
    	 	htmlTable.append("<br>");
    	 	htmlTable.append("video:" + ghp.video_id);
    	 	htmlTable.append("<hr>");
-   	 	htmlTable.append("<table>");
-   	 	htmlTable.append("<tr><th>Id</th><th>Comment Id</th><th>author</th><th>published</th><th alignr=center>collected</th></tr>");
+   	 	htmlTable.append("<table border=1 cellspacing=0 cellpadding=5>");
+   	 	htmlTable.append("<tr><th>Comment Id</th><th>URL</th><th>author</th><th>published</th><th alignr=center>collected</th></tr>");
      
    	 	for (Entry<Long, GvpComment> entry : comments.entrySet()) {
    	 		long id = entry.getKey();
    	 		GvpComment comment = entry.getValue();
    	 		
    	 		htmlTable.append("<tr>");
-   	 		htmlTable.append("<td>").append(id).append("</td>");
    	 		htmlTable.append("<td>").append(comment.comment_id).append("</td>");
+   	 	    String url_href = String.format("<a target='_blank' href='https://www.youtube.com/watch?v=%s&lc=%s'>URL</a>", ghp.video_id, comment.comment_id);
+   	 		htmlTable.append("<td>").append(url_href).append("</td>");
    	 		htmlTable.append("<td>").append(comment.authorDisplayName).append("</td>");
    	 		htmlTable.append("<td>").append(comment.publishedAt).append("</td>");
 //   	 		htmlTable.append("<td>&nbsp;&nbsp;").append(GvpComment.epochSecondsToLocalDateTimeUTC(comment.created_ts)).append("</td>");
