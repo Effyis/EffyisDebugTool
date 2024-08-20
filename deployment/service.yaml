@@ -1,0 +1,16 @@
+## Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: sg-debug-tool-service
+  labels:
+    app: sg-debug-tool-service
+spec:
+  type: ClusterIP
+  ports:
+    - name: cluster-ip-port
+      port: 80
+      protocol: TCP
+      targetPort: api-port
+  selector:
+    app: sg-debug-tool

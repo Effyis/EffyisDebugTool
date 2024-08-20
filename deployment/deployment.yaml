@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sg-debug-tool
+  labels:
+    app: sg-debug-tool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sg-debug-tool
+  template:
+    metadata:
+      namespace: sg-debug-tool
+      labels:
+        app: sg-debug-tool
+    spec:
+      volumes:
+        - name: sg-debug-tool-fluentd-config
+          configMap:
+            name: "sg-debug-tool-fluentd-config"
+        - name: sg-debug-tool-logs
+          emptyDir: {}
+      containers:
+        - image: harbor.sgdctroy.net/socialgist-dev/effyis-debug-tool:v1.0
+          name: effyis-debug-tool
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: api-port
+              containerPort: 8080
+#          volumeMounts:
+#            - name: "sg-debug-tool-logs"
+#              mountPath: /app/logs
+          readinessProbe:
+            exec:
+              command:
+                - ls
+#        - image: harbor.sgdctroy.net/socialgist-dev/fluentd-forwarder:latest
+#          name: vk-api-controller-fluentd
+#          volumeMounts:
+#            - name: "sg-debug-tool-fluentd-config"
+#              mountPath: /fluentd/etc/
+#            - name: "sg-debug-tool-logs"
+#              mountPath: /logs
+#          imagePullPolicy: IfNotPresent
