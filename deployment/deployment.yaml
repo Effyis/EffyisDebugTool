@@ -22,7 +22,7 @@ spec:
         - name: sg-debug-tool-logs
           emptyDir: {}
       containers:
-        - image: harbor.sgdctroy.net/socialgist-dev/effyis-debug-tool:v1.0
+        - image: harbor.sgdctroy.net/socialgist-dev/effyis-debug-tool:v1.01
           name: effyis-debug-tool
           imagePullPolicy: IfNotPresent
           ports:

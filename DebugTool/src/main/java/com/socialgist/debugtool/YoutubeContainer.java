@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.socialgist.debugtool.items.DtHtmlYoutubeApiResult;
 import com.socialgist.gvp.utils.HBaseContainer;
 import com.socialgist.gvp.utils.MySQLContainer;
 import com.socialgist.gvp.utils.items.GvpChannel;
@@ -51,7 +52,7 @@ public class YoutubeContainer  {
 	public void init() {
 	}
 	
-	public JsonNode readChannelJson(String channel_id) throws Exception {
+	public DtHtmlYoutubeApiResult readChannelHtml(String channel_id) throws Exception {
 /*		
 		auditDetails: Audit details for the channel, if applicable.		
 		brandingSettings: Settings related to the channel's branding, including the channel's profile image and banner.
@@ -64,13 +65,25 @@ public class YoutubeContainer  {
 		status: Information about the channel's status, such as privacy status and country.
 		topicDetails: Information about topics associated with the channel.
 */		
+ 		if ((channel_id==null) || (channel_id.isBlank())) return new DtHtmlYoutubeApiResult();
+		
+    	StringBuilder htmlTable = new StringBuilder();
 		String url = "https://www.googleapis.com/youtube/v3/channels?part=id,snippet,contentDetails,contentOwnerDetails,statistics,topicDetails,brandingSettings,status,localizations&maxResults=50&id="
 				+ channel_id + "&key=" + repository.youtube_token;
 		String json = httpContainer.connectToRest_Json(url);
-		return mapper.readTree(json);
+   	 	htmlTable.append(url);
+   	 	htmlTable.append("<hr>");
+   	 	JsonNode rootNode = mapper.readTree(json);
+   	 	String s = rootNode.toPrettyString();
+   	 	htmlTable.append(convertJsonToHtml(rootNode.toPrettyString()));
+   	 	DtHtmlYoutubeApiResult result = new DtHtmlYoutubeApiResult();
+   	    result.htmlText = htmlTable.toString();
+   	    if (rootNode.path("items").get(0)!=null )
+   	    	result.playlist_id = rootNode.path("items").get(0).path("contentDetails").path("relatedPlaylists").path("uploads").asText();
+		return result;
 	}
 
-	public JsonNode readPlaylistJson(String channel_id) throws Exception {
+	public DtHtmlYoutubeApiResult readPlaylistHtml(String channel_id) throws Exception {
 /*
 		id
 		contentDetails: Details about the content of the playlist, including the videos it contains and their order.
@@ -79,27 +92,35 @@ public class YoutubeContainer  {
 		snippet: Basic information about the playlist, including its title, description, and thumbnails.
 		status: Information about the playlist's status, such as privacy status and the number of videos in the playlist.
 */
+ 		if ((channel_id==null) || (channel_id.isBlank())) return new DtHtmlYoutubeApiResult();
+    	StringBuilder htmlTable = new StringBuilder();
 		String url = "https://www.googleapis.com/youtube/v3/playlists?part=id,contentDetails,localizations,player,snippet,status&maxResults=50&channelId="
 				+ channel_id + "&key=" + repository.youtube_token;
 		String json = httpContainer.connectToRest_Json(url);
-		return mapper.readTree(json);
+   	 	htmlTable.append(url);
+   	 	htmlTable.append("<hr>");
+   	 	JsonNode rootNode = mapper.readTree(json);
+   	 	
+   	 	String s = rootNode.toPrettyString();
+   	 	htmlTable.append(convertJsonToHtml(rootNode.toPrettyString()));
+   	 	DtHtmlYoutubeApiResult result = new DtHtmlYoutubeApiResult();
+   	    result.htmlText = htmlTable.toString();
+		return result;
 	}
 
-/*
-	public JsonNode readPlaylistJson(String playlist_id) throws Exception {
-		id
-		snippet: Basic information about the playlist, including its title, description, and thumbnails.
-		status: Information about the playlist's status, such as privacy status and the number of videos in the playlist.
-		contentDetails: Details about the content of the playlist, including the videos it contains and their order.
-		String url = "https://www.googleapis.com/youtube/v3/playlistItems?part=id,snippet,status,contentDetails&maxResults=50&playlistId="
-				+ playlist_id + "&key=" + repository.youtube_token;
+	public String readPlaylistItemsHtml(String playlist_id) throws Exception {
+    	StringBuilder htmlTable = new StringBuilder();
+    	String url = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet&maxResults=50&playlistId="
+    			+ playlist_id + "&key=" + repository.youtube_token;
 		String json = httpContainer.connectToRest_Json(url);
-		return mapper.readTree(json);
+   	 	htmlTable.append(url);
+   	 	htmlTable.append("<hr>");
+   	 	JsonNode rootNode = mapper.readTree(json);
+   	 	htmlTable.append(convertJsonToHtml(rootNode.toPrettyString()));
+   	 	return htmlTable.toString();
 	}
-*/
 	
-	
-	public JsonNode readVideoJson(String video_id) throws Exception {
+	public DtHtmlYoutubeApiResult readVideoHtml(String video_id) throws Exception {
 /*		
 		id
 		contentDetails: Details about the video's content, such as its duration and dimension.
@@ -115,15 +136,20 @@ public class YoutubeContainer  {
 		suggestions - owner only
 		topicDetails: Information about topics associated with the video.
 */		
-		
-//		String url = "https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&maxResults=50&key="
-//		+ p.gvpToken.token_encoded + "&id=" + videoIds;
-//		id,contentDetails,fileDetails,liveStreamingDetails,localizations,player,processingDetails,recordingDetails,snippet,statistics,status,suggestions,topicDetails
-		
+    	StringBuilder htmlTable = new StringBuilder();
 		String url = "https://www.googleapis.com/youtube/v3/videos?part=id,contentDetails,liveStreamingDetails,localizations,player,recordingDetails,snippet,statistics,status,topicDetails&maxResults=50&id="
 				+ video_id + "&key=" + repository.youtube_token;
 		String json = httpContainer.connectToRest_Json(url);
-		return mapper.readTree(json);
+   	 	htmlTable.append(url);
+   	 	htmlTable.append("<hr>");
+   	 	JsonNode rootNode = mapper.readTree(json);
+   	 	htmlTable.append(convertJsonToHtml(rootNode.toPrettyString()));
+
+   	 	DtHtmlYoutubeApiResult result = new DtHtmlYoutubeApiResult();
+   	    result.htmlText = htmlTable.toString();
+   	    if (rootNode.path("items").get(0)!=null )
+   	    	result.channel_id = rootNode.path("items").get(0).path("snippet").path("channelId").asText();
+		return result;
 	}
 	
 //	public HashMap<String, GvpVideo> readChannelContent(String channel_id) {
@@ -131,6 +157,8 @@ public class YoutubeContainer  {
 
 	public TreeMap<Long, GvpVideo> readVideosForChannel(String playlist_id) throws Exception {
 
+//  UCvdwhh_fDyWccR42-rReZLw  --- BUG		
+		
 			TreeMap<Long, GvpVideo> videos =  new TreeMap<>(Collections.reverseOrder());
 //			return mapper.readTree(json);
 		
@@ -152,6 +180,8 @@ public class YoutubeContainer  {
 				if (isStop) {
 					break;
 				}
+				if (total_count>200) break;  // limit 200
+				
 //				JsonNode rootNode = ro.getJsonObject(p, p.gvpToken, next_url, "check channel", 1);
 				String json = httpContainer.connectToRest_Json(next_url);
 				JsonNode rootNode = mapper.readTree(json);
@@ -212,6 +242,7 @@ public class YoutubeContainer  {
 						String hbase_post_id = buildHBaseVideoId(video_id, ctime);
 						GvpVideo ghr = new GvpVideo(hbase_post_id, ctime);
 						videos.put(ctime, ghr);
+						total_count++;
 				}
 
 				if (in_range_count < 40) {
@@ -222,7 +253,7 @@ public class YoutubeContainer  {
 			return videos;
 	}
 
-	public TreeMap<Long, GvpComment> readCommentsNotSent(GvpVideo ghp) throws Exception {
+	public TreeMap<Long, GvpComment> readCommentsForVideo(GvpVideo ghp) throws Exception {
 //		TreeMap<Long,GvpComment> comments =  new TreeMap<>(Collections.reverseOrder());
 		TreeMap<Long,GvpComment> comments =  new TreeMap<>(); 		
 		String url = "https://www.googleapis.com/youtube/v3/commentThreads?part=snippet%2C+replies&maxResults=100&order=time&textFormat=plainText&videoId="
@@ -235,6 +266,7 @@ public class YoutubeContainer  {
 		
 		while (true) {
 			if (next_url == null) break;
+			if (i>200) break;  // limit 200
 			String json = httpContainer.connectToRest_Json(next_url);
 			JsonNode rootNode = mapper.readTree(json);
 			if (rootNode == null) return null;
@@ -356,5 +388,17 @@ public long convertUnixTimeToThreadId(long unixTime) {
     c.setTimeInMillis(unixTime*1000);
 	return c.get(Calendar.HOUR_OF_DAY)*60 + c.get(Calendar.MINUTE);
 }
+
+public String convertJsonToHtml(String jsonString) {
+    if (jsonString == null) {
+        return null;
+    }
+    // Replace newline characters with <br> tags
+    String htmlString = jsonString.replace("\n", "<br>");
+    // Optionally, replace spaces with non-breaking spaces
+    htmlString = htmlString.replace(" ", "&nbsp;");
+    return htmlString;
+}     
+
 
 }

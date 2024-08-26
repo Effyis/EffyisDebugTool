@@ -15,15 +15,20 @@
     YouTube API: 
     
      <ul>
-    	<li><a href="/channel?channel_id=">/channel</a> 	</li>
-    	<li><a href="/playlist?channel_id=">/playlist</a>       </li>
-    	<li><a href="/video?video_id=">/video</a>               </li>
+    	<li><a href="/api_channel?channel_id=">API Channel</a> 	</li>
+    	<li><a href="/api_playlist?channel_id=">API Playlist</a>       </li>
+    	<li><a href="/api_playlist_items?playlist=">API Playlist Items</a>       </li>
+    	<li><a href="/api_video?video_id=">API Video</a>               </li>
     </ul>
     
 
 	Collector quality check
 	
      <ul>
+    	<li><a href="/rules_list?rule_id=0&offset=0&limit=100">Subscriptions by rule id</a> </li>
+    	<li><a href="/rules_names?rule_name=solar&offset=0&limit=100">Subscriptions by rule name (like '%%')</a> </li>
+    	<li><a href="/rules_created?sort=desc&offset=0&limit=100">Subscriptions by created_date</a> </li>
+		<br>    	
     	<li><a href="/channel_list?channel_id=">Channel</a> </li>
     	<li><a href="/video_list?video_id=">Video</a> 		</li>
     </ul>

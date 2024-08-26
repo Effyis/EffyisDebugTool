@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.socialgist.debugtool.items.DtHtmlTable;
 import com.socialgist.debugtool.model.Cell;
 import com.socialgist.debugtool.model.JsonData;
 import com.socialgist.debugtool.model.Row;
@@ -58,33 +59,26 @@ public class MySQLUtilsContainer  {
 		return premiumSubscriptions;
 	}
 
-//    public String subscription(@RequestParam(name = "channel_id", required = false ) String channel_id) throws IOException {
-//    SELECT id, stream_id, rule_name, rule_url, youtube_id, 
-//    CASE WHEN type = 0 THEN 'video' WHEN type = 1 THEN 'channel' END AS rule_type,
-//    FROM_UNIXTIME(last_start) as last_start, FROM_UNIXTIME(last_start_scheduled) as scheduled, active, date_created 
-//    FROM portalsdb.youtube_rules;    
 	
+    // Method to build HTML table
+    public DtHtmlTable buildHtmlTableFromQuery(SqlRowSet result) {
 
-	
-	
-	    // Method to execute SQL query and build HTML table
-//	    public String buildHtmlTableFromQuery(String sql) {
-    public String buildHtmlTableFromQuery(SqlRowSet result) {
+    	int columnsCount = 0;
+    	int rowCount = 0;
     	
-//	        SqlRowSet result = jdbcTemplateObject.queryForRowSet(sql);
-
-    		StringBuilder htmlTable = new StringBuilder("<table border=\"1\">");
-    	
+    	StringBuilder htmlTable = new StringBuilder("<table border=1 cellspacing=0 cellpadding=5>");
 	        // Get column names
-	        String[] columnNames = result.getMetaData().getColumnNames();
-
+    		SqlRowSetMetaData metaData = result.getMetaData();
+	        String[] columnNames = metaData.getColumnNames();
+    		 
 	        // Add header row
 	        htmlTable.append("<tr>");
 	        for (String columnName : columnNames) {
-	            htmlTable.append("<th>").append(columnName).append("</th>");
+	        	columnsCount++;
+//	            htmlTable.append("<th>").append(columnName).append("</th>");
+	            htmlTable.append("<th>").append(metaData.getColumnLabel(columnsCount)).append("</th>");
 	        }
 	        htmlTable.append("</tr>");
-
 	        // Add data rows
 	        while (result.next()) {
 	            htmlTable.append("<tr>");
@@ -92,11 +86,10 @@ public class MySQLUtilsContainer  {
 	                htmlTable.append("<td>").append(result.getString(columnName)).append("</td>");
 	            }
 	            htmlTable.append("</tr>");
+	        	rowCount++;
 	        }
-
 	        htmlTable.append("</table>");
-
-	        return htmlTable.toString();
+	        return new DtHtmlTable(htmlTable.toString(), columnsCount, rowCount);
 	    }
 
     	public String buildCoogleChartTableFromQuery(SqlRowSet result) {
@@ -243,6 +236,35 @@ public class MySQLUtilsContainer  {
 			
 			return buildCoogleChartTableFromQuery(result);
 //			return buildHtmlTableFromQuery(result);
+		}
+
+		public DtHtmlTable get_subscriptions(String where, int offset, int limit, int order_by, String sort) {
+			
+			String sql = " SELECT "
+					+ " id as id, "
+					+ " stream_id AS stream, "	
+					+ " IF(LENGTH(rule_name) > 30, "
+					+ "       CONCAT(SUBSTRING(rule_name, 1, 27), '...'), "
+					+ "       rule_name) AS rule_name, "
+					+ " youtube_id,  " 
+					+ " CASE WHEN type = 0 THEN CONCAT('<a target=''_blank'' href=''/video_list?video_id=', youtube_id, '''>debug</a>')"
+					+ " WHEN type = 1 THEN CONCAT('<a target=''_blank'' href=''/channel_list?channel_id=', youtube_id, '''>debug</a>') END AS debug,  "
+					+ " CASE WHEN type = 0 THEN CONCAT('<a target=''_blank'' href=''/api_video?video_id=', youtube_id, '''>api</a>')"
+					+ " WHEN type = 1 THEN CONCAT('<a target=''_blank'' href=''/api_channel?channel_id=', youtube_id, '''>api</a>') END AS api,  "
+					+ " CASE WHEN type = 0 THEN CONCAT('<a target=''_blank'' href=''https://www.youtube.com/watch?v=', youtube_id, '''>url</a>')"
+					+ " WHEN type = 1 THEN CONCAT('<a target=''_blank'' href=''https://www.youtube.com/channel/', youtube_id, '''>url</a>') END AS url,  "
+					+ " CASE WHEN type = 0 THEN 'video' WHEN type = 1 THEN 'channel' END AS type,  "
+		    		+ " FROM_UNIXTIME(last_start) as last_start, FROM_UNIXTIME(last_start_scheduled) as scheduled,   " 
+		    		+ " active, date_created   "
+		    		+ " FROM portalsdb.youtube_rules   "
+					+ " where " + where 
+					+ " order by " + order_by + " " + sort 
+					+ " limit " + limit
+					+ " offset " + offset;
+			SqlRowSet result = jdbcTemplateObject.queryForRowSet(sql);
+			
+			return buildHtmlTableFromQuery(result);
+			
 		}
 		
 		

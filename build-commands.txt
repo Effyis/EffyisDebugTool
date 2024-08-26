@@ -1,10 +1,10 @@
 Debug Tool build commands (change version if needed)
 
-docker build -t harbor.sgdctroy.net/socialgist-dev/effyis-debug-tool:v1.0 .
+docker build -t harbor.sgdctroy.net/socialgist-dev/effyis-debug-tool:v1.01 .
 
 ---------------------------------------------------------------
 
-docker push harbor.sgdctroy.net/socialgist-dev/effyis-debug-tool:v1.0
+docker push harbor.sgdctroy.net/socialgist-dev/effyis-debug-tool:v1.01
 
 *** View all deployments
 kubectl get all -n sg-debug-tool

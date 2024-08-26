@@ -36,6 +36,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.socialgist.debugtool.items.DtHtmlTable;
+import com.socialgist.debugtool.items.DtHtmlYoutubeApiResult;
 import com.socialgist.debugtool.model.Cell;
 import com.socialgist.debugtool.model.JsonData;
 import com.socialgist.debugtool.model.Row;
@@ -103,8 +105,6 @@ public class ServiceController {
     }
 
 
-//    @GetMapping("/subscription")
-    
     @GetMapping("/all_premium")
     public String all_premium10() throws IOException {
     	
@@ -129,50 +129,267 @@ public class ServiceController {
          return htmlTable.toString();
     }
 
-    @GetMapping("/channel")
- 	public String channel(@RequestParam(name = "channel_id", required = false ) String channel_id) throws Exception {
-    	if ((channel_id == null) || channel_id.isBlank())  
-    		return "Please specify channel_id";
-    	JsonNode rootNode = youtubeContainer.readChannelJson(channel_id);
-    	return rootNode.toPrettyString();
+    @GetMapping("/api_channel")
+ 	public String api_channel(@RequestParam(name = "channel_id", required = false ) String channel_id) throws Exception {
+
+    	DtHtmlYoutubeApiResult apiResult = youtubeContainer.readChannelHtml(channel_id);
+    	StringBuilder htmlTable = new StringBuilder();
+   	 	htmlTable.append("<table border=0 cellspacing=0 cellpadding=5><tr style=\"vertical-align: top;\"><td>");
+   	 	htmlTable.append("<a href=\"youtube_index\"><img src=\"socialgist_youtube.jpg\" alt=\"DT Youtube Home\" height=25></a>");
+   	 	htmlTable.append("</td><td width=\"30\"></td><td><h2>Youtube Channels API</h2></td></tr></table>");
+   	 	htmlTable.append("<hr>");
+   	 	htmlTable.append("<table border=0><tr>");
+ 		if ((apiResult.htmlText!=null)) {
+ 			htmlTable.append("<td>Channel:</td>");
+ 			htmlTable.append("<td><b>" + channel_id + "</b></td>");
+ 			htmlTable.append("<td width=\"20%\"></td>");
+ 		}
+   	 	htmlTable.append("<td valign='bottom'>" + buildRedirectionForm("api_channel?channel_id=", "", "Enter channel_id", "Search") + "</td>");
+   	 	htmlTable.append("<td width=\"10%\"></td>");
+ 		if ((apiResult.htmlText!=null)) {
+ 			htmlTable.append("<td><a target='_blank' href=\"channel_list?channel_id=" + channel_id + "\">Channel Debug View</a></td>");
+ 			htmlTable.append("<td align=center width=\"20\">|</td>");
+ 			htmlTable.append("<td><a target='_blank' href=\"api_playlist?channel_id=" + channel_id + "\">Playlists API</a></td>");
+ 			htmlTable.append("<td align=center width=\"20\">|</td>");
+ 			htmlTable.append("<td><a target='_blank' href=\"api_playlist_items?playlist_id=" + apiResult.playlist_id + "\">PlaylistItems API</a></td>");
+ 		}
+   	 	htmlTable.append("</tr></table>");
+ 		if ((apiResult.htmlText!=null)) {
+ 			htmlTable.append("<hr>");
+ 			htmlTable.append(apiResult.htmlText);
+ 		}
+    	return htmlTable.toString();
     }
     
-    @GetMapping("/playlist")
- 	public String playlist(@RequestParam(name = "channel_id", required = false ) String channel_id) throws Exception {
-    	if ((channel_id == null) || channel_id.isBlank())  
-    		return "Please specify channel_id";
-    	JsonNode rootNode = youtubeContainer.readPlaylistJson(channel_id);
-    	return rootNode.toPrettyString();
-    }
-    
-    @GetMapping("/video")
- 	public String video(@RequestParam(name = "video_id", required = false ) String video_id) throws Exception {
-    	if ((video_id == null) || video_id.isBlank())  
-    		return "Please specify video_id";
-    	JsonNode rootNode = youtubeContainer.readVideoJson(video_id);
-    	return rootNode.toPrettyString();
+    @GetMapping("/api_playlist")
+ 	public String api_playlist(@RequestParam(name = "channel_id", required = false ) String channel_id) throws Exception {
+    	DtHtmlYoutubeApiResult apiResult = youtubeContainer.readPlaylistHtml(channel_id);
+    	StringBuilder htmlTable = new StringBuilder();
+   	 	htmlTable.append("<table border=0 cellspacing=0 cellpadding=5><tr style=\"vertical-align: top;\"><td>");
+   	 	htmlTable.append("<a href=\"youtube_index\"><img src=\"socialgist_youtube.jpg\" alt=\"DT Youtube Home\" height=25></a>");
+   	 	htmlTable.append("</td><td width=\"30\"></td><td><h2>Youtube Playlists API</h2></td></tr></table>");
+   	 	htmlTable.append("<hr>");
+   	 	htmlTable.append("<table border=0><tr>");
+ 		if ((apiResult.htmlText!=null)) {
+ 			htmlTable.append("<td>Channel:</td>");
+ 			htmlTable.append("<td><b>" + channel_id + "</b></td>");
+ 			htmlTable.append("<td width=\"20%\"></td>");
+ 		}
+   	 	htmlTable.append("<td valign='bottom'>" + buildRedirectionForm("api_playlist?channel_id=", "", "Enter channel_id", "Search") + "</td>");
+ 		if ((apiResult.htmlText!=null)) {
+ 			htmlTable.append("<td width=\"10%\"></td>");
+ 			htmlTable.append("<td><a target='_blank' href=\"api_channel?channel_id=" + channel_id + "\">Channel API</a></td>");
+ 			htmlTable.append("<td align=center width=\"20\">|</td>");
+ 			htmlTable.append("<td><a target='_blank' href=\"channel_list?channel_id=" + channel_id + "\">Channel Debug View</a></td>");
+ 		}
+ 		htmlTable.append("</tr></table>");
+ 		if ((apiResult.htmlText!=null)) {
+ 			htmlTable.append("<hr>");
+ 			htmlTable.append(apiResult.htmlText);
+ 		}
+    	return htmlTable.toString();
     }
 
+    @GetMapping("/api_playlist_items")
+ 	public String api_playlist_items(@RequestParam(name = "playlist_id", required = false ) String playlist_id) throws Exception {
+
+    	StringBuilder htmlTable = new StringBuilder();
+   	 	htmlTable.append("<table border=0 cellspacing=0 cellpadding=5><tr style=\"vertical-align: top;\"><td>");
+   	 	htmlTable.append("<a href=\"youtube_index\"><img src=\"socialgist_youtube.jpg\" alt=\"DT Youtube Home\" height=25></a>");
+   	 	htmlTable.append("</td><td width=\"30\"></td><td><h2>Youtube PlaylistItems API</h2></td></tr></table>");
+   	 	htmlTable.append("<hr>");
+   	 	htmlTable.append("<table border=0><tr>");
+   	 	htmlTable.append("<td>Playlist:</td>");
+   	 	htmlTable.append("<td><b>" + playlist_id + "</b></td>");
+   	 	htmlTable.append("<td width=\"20%\"></td>");
+   	 	htmlTable.append("<td valign='bottom'>" + buildRedirectionForm("api_playlist_items?playlist_id=", "", "Enter playlist_id", "Search") + "</td>");
+   	 	
+   	 	htmlTable.append("</tr></table>");
+   	 	htmlTable.append("<hr>");
+   	 	htmlTable.append(youtubeContainer.readPlaylistItemsHtml(playlist_id));
+    	return htmlTable.toString();
+    }
+    
+    @GetMapping("/api_video")
+ 	public String video(@RequestParam(name = "video_id", required = false ) String video_id) throws Exception {
+    	
+    	DtHtmlYoutubeApiResult apiResult = youtubeContainer.readVideoHtml(video_id);
+    	
+    	StringBuilder htmlTable = new StringBuilder();
+   	 	htmlTable.append("<table border=0 cellspacing=0 cellpadding=5><tr style=\"vertical-align: top;\"><td>");
+   	 	htmlTable.append("<a href=\"youtube_index\"><img src=\"socialgist_youtube.jpg\" alt=\"DT Youtube Home\" height=25></a>");
+   	 	htmlTable.append("</td><td width=\"30\"></td><td><h2>Youtube Videos API</h2></td></tr></table>");
+   	 	htmlTable.append("<hr>");
+   	 	htmlTable.append("<table border=0 ><tr>");
+   	 	htmlTable.append("<td>Video_id:</td>");
+   	 	htmlTable.append("<td><b>" + video_id + "</b></td>");
+   	 	htmlTable.append("<td width=\"20%\"></td>");
+   	 	htmlTable.append("<td valign='bottom'>" + buildRedirectionForm("api_video?video_id=", "", "Enter video_id", "Search") + "</td>");
+   	 	htmlTable.append("<td width=\"10%\"></td>");
+   	 	htmlTable.append("<td><a target='_blank' href=\"video_list?video_id=" + video_id + "\">Video Debug View</a></td>");
+   	 	htmlTable.append("<td align=center width=\"20\">|</td>");
+   	 	htmlTable.append("<td><a target='_blank' href=\"https://www.youtube.com/watch?v=" + video_id + "\">Video URL</a></td>");
+ 		if ((apiResult.channel_id!=null)) {
+ 			htmlTable.append("<td align=center width=\"20\">|</td>");
+ 			htmlTable.append("<td><a target='_blank' href=\"api_channel?channel_id=" + apiResult.channel_id + "\">Channel API</a></td>");
+ 			htmlTable.append("<td align=center width=\"20\">|</td>");
+ 			htmlTable.append("<td><a target='_blank' href=\"channel_list?channel_id=" + apiResult.channel_id + "\">Channel Debug View</a></td>");
+ 		}
+   	 	htmlTable.append("</tr></table>");
+   	 	htmlTable.append("<hr>");
+   	 	htmlTable.append(apiResult.htmlText);
+    	return htmlTable.toString();
+    }
+
+    @GetMapping("/rules_list")
+ 	public String rules_list(@RequestParam(name = "rule_id") int rule_id, @RequestParam(name = "limit") int limit) throws Exception {
+    	
+    	int prevPage = rule_id - limit;
+    	if (prevPage < 0) prevPage=0;
+    	int nextPage = rule_id + limit;
+    	
+    	DtHtmlTable subscrptionTable = mySQLUtilsContainer.get_subscriptions("id >="+rule_id, 0, limit, 1, "asc");   	 	
+   	 	StringBuilder htmlTable = new StringBuilder();
+   	 	htmlTable.append("<table border=0 cellspacing=0 cellpadding=5><tr style=\"vertical-align: top;\"><td>");
+   	 	htmlTable.append("<a href=\"youtube_index\"><img src=\"socialgist_youtube.jpg\" alt=\"DT Youtube Home\" height=25></a>");
+   	 	htmlTable.append("</td><td width=\"30\"></td><td><h2>Youtube Videos</h2></td></tr></table>");
+   	 	htmlTable.append("<hr>");
+   	 	htmlTable.append("<table border=0><tr>");
+    	if (rule_id > 0) { 
+    		htmlTable.append("<td>&nbsp;<a href=\"rules_list?rule_id=" + prevPage + "&limit="+limit+ "\">" + " << Prev Page " + "</a></td>");
+    	}
+    	else {
+    		htmlTable.append("<td>&nbsp; << Prev Page </td>");
+    	}
+	 		htmlTable.append("<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>");
+    	if (subscrptionTable.rowCount >= limit) 
+   	 		htmlTable.append("<td>&nbsp;<a href=\"rules_list?rule_id=" + nextPage + "&limit="+limit+"\">" + " Next Page >>  " + "</a></td>");
+   	 	htmlTable.append("<td width=\"20%\"></td>");
+   	 	htmlTable.append("<td valign='bottom'>" + buildRedirectionForm("rules_list?rule_id=", "&limit="+limit, "Enter rule id", "Search") + "</td>");
+   	 	htmlTable.append("<td>&nbsp;&nbsp;&nbsp;Limit " + limit + " records.</td>");
+   	 	htmlTable.append("</tr></table>");
+   	 	htmlTable.append("<br>");
+   	 	htmlTable.append(subscrptionTable.htmlTable);
+   	 	return htmlTable.toString();
+ 	}
+    
+    @GetMapping("/rules_names")
+ 	public String rules_names(@RequestParam(name = "rule_name") String rule_name, @RequestParam(name = "offset") int offset, @RequestParam(name = "limit") int limit) throws Exception {
+
+    	int prevOffset = offset - limit;
+    	if (prevOffset < 0) prevOffset=0;
+    	int nextOffset = offset + limit;
+    	DtHtmlTable subscrptionTable = mySQLUtilsContainer.get_subscriptions("rule_name like '%"+rule_name+"%'", offset, limit, 3, "asc");   	 	
+   	 	StringBuilder htmlTable = new StringBuilder();
+   	 	htmlTable.append("<table border=0 cellspacing=0 cellpadding=5><tr style=\"vertical-align: top;\"><td>");
+   	 	htmlTable.append("<a href=\"youtube_index\"><img src=\"socialgist_youtube.jpg\" alt=\"DT Youtube Home\" height=25></a>");
+   	 	htmlTable.append("</td><td width=\"30\"></td><td><h2>Youtube Videos</h2></td></tr></table>");
+   	 	htmlTable.append("<p>");
+   	 	htmlTable.append("<hr>");
+   	 	htmlTable.append("<table border=0><tr>");
+   	 	htmlTable.append("<td>Filtered by rule_name:</td>");
+   	 	htmlTable.append("<td><b>" + rule_name + "</b></td>");
+   	 	htmlTable.append("<td width=\"20%\"></td>");
+   	 	htmlTable.append("<td valign='bottom'>" + buildRedirectionForm("rules_names?rule_name=", "&offset=0&limit="+limit, "Enter rule name", "Search") + "</td>");
+   	 	htmlTable.append("<td>&nbsp;&nbsp;&nbsp;Limit " + limit + " records.</td>");
+   	 	htmlTable.append("</tr></table>");
+   	 	htmlTable.append("<br>");
+    	if (offset > 0) 
+    		htmlTable.append("&nbsp;&nbsp;<a href=\"rules_names?rule_name=" + rule_name + "&offset="+prevOffset+"&limit="+limit+ "\">" + " << Prev Page " + "</a> &nbsp;&nbsp;");
+    	if (subscrptionTable.rowCount >= limit) {
+   	 		htmlTable.append("&nbsp;<a href=\"rules_names?rule_name=" + rule_name + "&offset="+nextOffset+"&limit="+limit+"\">" + " Next Page >>  " + "</a>");
+   	 		htmlTable.append("<br>");
+   	   	 	htmlTable.append("<br>");
+    	}
+   	 	htmlTable.append(subscrptionTable.htmlTable);
+   	 	return htmlTable.toString();
+    } 	
+
+
+    @GetMapping("/rules_created")
+ 	public String rules_created(@RequestParam(name = "sort") String sort, @RequestParam(name = "offset") int offset, @RequestParam(name = "limit") int limit) throws Exception {
+
+    	int prevOffset = offset - limit;
+    	if (prevOffset < 0) prevOffset=0;
+    	int nextOffset = offset + limit;
+    	DtHtmlTable subscrptionTable = mySQLUtilsContainer.get_subscriptions("id>0", offset, limit, 11, sort);   	 	
+   	 	StringBuilder htmlTable = new StringBuilder();
+   	 	htmlTable.append("<table border=0 cellspacing=0 cellpadding=5><tr style=\"vertical-align: top;\"><td>");
+   	 	htmlTable.append("<a href=\"youtube_index\"><img src=\"socialgist_youtube.jpg\" alt=\"DT Youtube Home\" height=25></a>");
+   	 	htmlTable.append("</td><td width=\"30\"></td><td><h2>Youtube Videos</h2></td></tr></table>");
+   	 	htmlTable.append("<p>");
+   	 	htmlTable.append("<hr>");
+   	 	htmlTable.append("<table border=0><tr>");
+    	if (offset > 0) { 
+    		htmlTable.append("<td>&nbsp;<a href=\"rules_created?sort=" + sort + "&offset="+prevOffset+"&limit="+limit+ "\">" + " << Prev Page " + "</a></td>");
+    		htmlTable.append("<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>");
+    	}
+    	if (subscrptionTable.rowCount >= limit) 
+   	 		htmlTable.append("<td>&nbsp;<a href=\"rules_created?sort=" + sort + "&offset="+nextOffset+"&limit="+limit+"\">" + " Next Page >>  " + "</a></td>");
+   	 	htmlTable.append("</tr></table>");
+   	 	htmlTable.append("<p>");
+   	 	htmlTable.append(subscrptionTable.htmlTable);
+   	 	return htmlTable.toString();
+    } 	
+    
+    
     @GetMapping("/channel_list")
 // 	public String channel(@RequestParam(name = "channel_id") String channel_id, Model model
  	public String channel_list(@RequestParam(name = "channel_id") String channel_id) throws Exception {
 
- 		if ((channel_id==null) || (channel_id.isBlank())) return "no parameter channel_id";
     	//qCyufu4Ep0Q
- 		GvpChannel ghc = hbaseContainer.checkChannelForExistence(channel_id);
- 		if (ghc==null) return "channel has not been collected - no records in hbase";
-
+    	GvpChannel ghc=null;
+ 		if ((channel_id!=null) && (!channel_id.isBlank()))	{
+ 			ghc = hbaseContainer.checkChannelForExistence(channel_id);
+ 		}
+ 		
    	 	StringBuilder htmlTable = new StringBuilder();
+   	 	htmlTable.append("<table border=0 cellspacing=0 cellpadding=5><tr style=\"vertical-align: top;\"><td>");
+   	 	htmlTable.append("<a href=\"youtube_index\"><img src=\"socialgist_youtube.jpg\" alt=\"DT Youtube Home\" height=25></a>");
+   	 	htmlTable.append("</td><td width=\"30\"></td><td><h2>Youtube Channel Debug View</h2></td></tr></table>");
+   	 	
+   	 	htmlTable.append("<hr>");
+   	 	htmlTable.append("<table border=0><tr>");
+ 		if ((ghc!=null)) {
+ 			htmlTable.append("<td>channel_id:</td>");
+ 			htmlTable.append("<td><b>" + channel_id + "</b></td>");
+ 			htmlTable.append("<td width=\"20%\"></td>");
+ 		}
+ 		else {
+ 	 		if ((channel_id!=null) && (!channel_id.isBlank()))	{
+ 	 			htmlTable.append("<td>Channel with channel_id of '"+channel_id+"' not found in HBase.</td>");
+ 	 			htmlTable.append("<td width=\"20%\"></td>");
+ 	 		}
+ 		}
+   	 	htmlTable.append("<td valign='bottom'>" + buildRedirectionForm("channel_list?channel_id=", "", "Enter channel_id", "Search") + "</td>");
+   	 	htmlTable.append("<td width=\"10%\"></td>");
+ 		if ((ghc!=null)) {
+ 	   	 	htmlTable.append("<td><a target='_blank' href=\"api_channel?channel_id=" + channel_id + "\">Channel API</a></td>");
+ 			htmlTable.append("<td align=center width=\"20\">|</td>");
+ 			htmlTable.append("<td><a target='_blank' href=\"api_playlist?channel_id=" + channel_id + "\">Playlists API</a></td>");
+ 			htmlTable.append("<td align=center width=\"20\">|</td>");
+ 			htmlTable.append("<td><a target='_blank' href=\"api_playlist_items?playlist_id=" + ghc.playlist_id + "\">PlaylistItems API</a></td>");
+ 		}
+   	 	htmlTable.append("</tr></table>");   	 	
+   	 	htmlTable.append("<hr>");
 
-   	 	htmlTable.append("<b>channel_id:</b> " + ghc.channel_id);
+ 		if ((ghc==null)) return htmlTable.toString();
+ 		
+   	 	htmlTable.append("<b>Subscription rules:</b>");
    	 	htmlTable.append("<p>");
-   	 	htmlTable.append("<b>playlist_id:</b> " + ghc.playlist_id);
+   	 	
+   	 	String where = "youtube_id like '" + ghc.channel_id + "'";
+   	 	DtHtmlTable subscrptionTable = mySQLUtilsContainer.get_subscriptions(where, 0, 10, 1, "asc");   	 	
+   	 	htmlTable.append(subscrptionTable.htmlTable);
+   	 	htmlTable.append("<p>");
+   	 	htmlTable.append("<hr>");
+   	 	htmlTable.append("<b>Video list (limit 90 days or 200 latest videos):</b>");
    	 	htmlTable.append("<p>");
    	 	
     	TreeMap<Long, GvpVideo> videos = youtubeContainer.readVideosForChannel(ghc.playlist_id);
    	 	
    	 	htmlTable.append("<table border=1 cellspacing=0 cellpadding=5>");
-   	 	htmlTable.append("<tr><th>Video Id</th><th>URL</th><th>Created</th><th>Last Check</th><th>Comments</th><th>Comments Sent</th></tr>");
+   	 	htmlTable.append("<tr><th>Video Id</th><th>URL</th><th>Created</th><th>Last Check</th><th>Comments</th><th>Comments Sent</th><th>lastComment_ts</th></tr>");
      
    	 	for (Entry<Long, GvpVideo> entry : videos.entrySet()) {
    	 		Long video_id = entry.getKey();
@@ -190,6 +407,7 @@ public class ServiceController {
    	 		htmlTable.append("<td align='right'>").append((v2==null)?"---" : Instant.ofEpochSecond(v2.lastCheck_ts)).append("</td>");
    	 		htmlTable.append("<td align='right'>").append((v2==null)?"---" : v2.commentsCount).append("</td>");
    	 		htmlTable.append("<td  align='right'>").append((v2==null)?"---" : v2.commentsSent).append("</td>");
+   	 		htmlTable.append("<td  align='right'>").append((v2==null)?"---" : Instant.ofEpochSecond(v2.lastComment_ts)).append("</td>");
    	 		htmlTable.append("</tr>");
    	 	}
      
@@ -201,20 +419,60 @@ public class ServiceController {
 // 	public String channel(@RequestParam(name = "channel_id") String channel_id, Model model
  	public String video_list(@RequestParam(name = "video_id") String video_id) throws Exception {
 
- 		if ((video_id==null) || (video_id.isBlank())) return "no parameter video_id";
-    	//qCyufu4Ep0Q
- 		GvpVideo ghp = hbaseContainer.checkVideoForExistence(video_id);
- 		if (ghp==null) return "video has not been collected";
-
- 		TreeMap<Long, GvpComment> comments = youtubeContainer.readCommentsNotSent(ghp);
-//    	TreeMap<Long, GvpVideo> videos = youtubeContainer.readVideosForChannel(channel_id);
-
    	 	StringBuilder htmlTable = new StringBuilder();
-     
-   	 	htmlTable.append("channel:" + ghp.channel_id);
-   	 	htmlTable.append("<br>");
-   	 	htmlTable.append("video:" + ghp.video_id);
+   	 	htmlTable.append("<table border=0 cellspacing=0 cellpadding=5><tr style=\"vertical-align: top;\"><td>");
+   	 	htmlTable.append("<a href=\"youtube_index\"><img src=\"socialgist_youtube.jpg\" alt=\"DT Youtube Home\" height=25></a>");
+   	 	htmlTable.append("</td><td width=\"30\"></td><td><h2>Youtube Video Debug View</h2></td></tr></table>");
+   	 	htmlTable.append("<p>");
+   	 	
+    	//qCyufu4Ep0Q
+ 		GvpVideo ghp = null;
+ 		if ((video_id!=null) && (!video_id.isBlank()))	{
+ 			ghp = hbaseContainer.checkVideoForExistence(video_id);
+ 		}
+
+   	 	htmlTable.append("<table border=0><tr>");
+ 		if ((ghp!=null)) {
+ 			htmlTable.append("<td>video_id:</td>");
+ 			htmlTable.append("<td><b>" + video_id + "</b></td>");
+ 			htmlTable.append("<td width=\"20%\"></td>");
+ 		}
+ 		else {
+ 	 		if ((video_id!=null) && (!video_id.isBlank()))	{
+ 	 			htmlTable.append("<td>Video with video_id of '"+video_id+"' not found in HBase.</td>");
+ 	 			htmlTable.append("<td width=\"20%\"></td>");
+ 	 		}
+ 		}
+   	 	htmlTable.append("<td valign='bottom'>" + buildRedirectionForm("video_list?video_id=", "", "Enter video_id", "Search") + "</td>");
+   	 	htmlTable.append("<td width=\"10%\"></td>");
+   	 	htmlTable.append("<td><a target='_blank' href=\"api_video?video_id=" + video_id + "\">Video API</a></td>");
+ 		if ((ghp!=null)) {
+			htmlTable.append("<td align=center width=\"20\">|</td>");
+ 	   	 	htmlTable.append("<td><a target='_blank' href=\"api_channel?channel_id=" + ghp.channel_id + "\">Channel API</a></td>");
+ 		}
+   	 	htmlTable.append("</tr></table>");   	 	
+ 		
+ 		if (ghp==null) {
+ 			return htmlTable.toString();
+ 		}
+ 		
+ 		
+ 		if ((ghp!=null)) {
+ 	   	 	htmlTable.append("<table border=0>");
+ 	   	 	htmlTable.append("<tr><td>channel:</td><td>" + ghp.channel_id + "</td></tr>");
+ 	   	 	htmlTable.append("<tr><td>last check:</td><td>" + Instant.ofEpochSecond(ghp.lastCheck_ts) + "</td></tr>");
+ 	   	 	htmlTable.append("<tr><td>comments sent:</td><td>" + ghp.commentsSent + "</td></tr>");
+ 	   	 	htmlTable.append("<tr><td>last comment:</td><td>" + Instant.ofEpochSecond(ghp.lastComment_ts) + "</td></tr></table>");
+ 		}
+ 		
+ 		
    	 	htmlTable.append("<hr>");
+   	 	
+   	 	
+ 		TreeMap<Long, GvpComment> comments = youtubeContainer.readCommentsForVideo(ghp);
+   	 	
+   	 	htmlTable.append("<b>200 latest comments:</b>");
+   	 	htmlTable.append("<p>");
    	 	htmlTable.append("<table border=1 cellspacing=0 cellpadding=5>");
    	 	htmlTable.append("<tr><th>Comment Id</th><th>URL</th><th>author</th><th>published</th><th alignr=center>collected</th></tr>");
      
@@ -679,6 +937,24 @@ public class ServiceController {
      return convertJsonToHtml(response);
      
     }
+
+    
+    public String connectWithoutProxy(String url) throws IOException {
+    	
+    String response = "";    	
+     // Create a RestTemplate with the configured requestFactory
+     RestTemplate restTemplate = new RestTemplate();
+     try {
+        response = restTemplate.getForObject(url, String.class);
+     } catch (RestClientResponseException e) {  // (HttpClientErrorException | HttpServerErrorException | UnknownHttpStatusCodeException e)
+        response = response + "<br>" + "Error Code:" + e.getStatusCode();
+        response = response + "<br>" + e.getResponseBodyAsString();
+     } catch (Exception e) {
+     	response = response + "<br>" + e.getMessage();
+     }
+     System.out.println(response);
+     return convertJsonToHtml(response);
+    }
     
     public String convertJsonToHtml(String jsonString) {
         if (jsonString == null) {
@@ -967,6 +1243,16 @@ public class ServiceController {
 
         return String.format("Date(%d, %d, %d, %d, %d, %d)", 
                 year, month, day, hour, minute, second);
+    }
+
+    
+    public String buildRedirectionForm(String url1, String url2, String placeholder, String button) {
+    	String s = ""
+    		 + "<input type=\"text\" id=\"in\" placeholder=\" " + placeholder + "   \">"
+    		 + "<button type=\"button\" onclick=\"window.location.href="
+    		 + "'"+url1+"'+document.getElementById('in').value+'"+url2+"'\"> " + button + " </button>"
+    		 + "";
+		return s;
     }
     
     

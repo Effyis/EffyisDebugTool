@@ -2,8 +2,8 @@ FROM maven:3.8.5-openjdk-17 AS BUILDER
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY pom.xml /usr/src/app/
-COPY src /usr/src/app/src/
+COPY DebugTool/pom.xml /usr/src/app/
+COPY DebugTool/src /usr/src/app/src/
 
 COPY settings.xml /root/.m2/
 COPY settings-security.xml /root/.m2/
