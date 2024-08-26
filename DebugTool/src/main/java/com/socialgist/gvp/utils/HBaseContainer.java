@@ -570,6 +570,27 @@ public class HBaseContainer implements Closeable {
 		} 
 		catch (IOException e) {};
 	}
+
+	public GvpVideo hBase_updateResetLastComment(String video_id) {
+	  	LOGGER.debug("HBase:hBase_updateLastCheck");
+		if (debug_readonly_mode) return null;
+		GvpVideo ghp = checkVideoForExistence(video_id);
+		if (ghp == null) return null;
+		Put put = new Put(Bytes.toBytes(ghp.hbase_index));
+//		put.addColumn(Bytes.toBytes("cfStatus"),Bytes.toBytes("lastCheck_ts"),Bytes.toBytes(System.currentTimeMillis()/1000));
+		ghp.new_lastComment_ts = 0;
+		ghp.lastCheck_ts = 0;
+		ghp.new_commentsCount=0;
+		put.addColumn(Bytes.toBytes("cfStatus"),Bytes.toBytes("lastComment_ts"),Bytes.toBytes(ghp.new_lastComment_ts));
+		put.addColumn(Bytes.toBytes("cfStatus"),Bytes.toBytes("lastCheck_ts"),Bytes.toBytes(ghp.lastCheck_ts));
+		put.addColumn(Bytes.toBytes("cfStatus"),Bytes.toBytes("commentsCount_int"),Bytes.toBytes(ghp.new_commentsCount));
+		try {
+			hTable_VideoGvp.put(put);
+		} 
+		catch (IOException e) {};
+		ghp = checkVideoForExistence(video_id);
+		return ghp; 
+	}
 	
 	//***********************************************
 	//*******  Check MEDIA For Existence   **********

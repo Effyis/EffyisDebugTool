@@ -25,6 +25,7 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClientResponseException;
@@ -416,7 +417,6 @@ public class ServiceController {
     }
     
     @GetMapping("/video_list")
-// 	public String channel(@RequestParam(name = "channel_id") String channel_id, Model model
  	public String video_list(@RequestParam(name = "video_id") String video_id) throws Exception {
 
    	 	StringBuilder htmlTable = new StringBuilder();
@@ -455,17 +455,21 @@ public class ServiceController {
  		if (ghp==null) {
  			return htmlTable.toString();
  		}
+
+   	 	htmlTable.append("<table border=0>");
+   	 	htmlTable.append("<tr><td>channel:</td><td>" + ghp.channel_id + "</td></tr>");
+   	 	htmlTable.append("<tr><td>last check:</td><td>" + Instant.ofEpochSecond(ghp.lastCheck_ts) + "</td></tr>");
+   	 	htmlTable.append("<tr><td>comments sent:</td><td>" + ghp.commentsSent + "</td></tr>");
+   	 	htmlTable.append("<tr><td>last comment:</td><td>" + Instant.ofEpochSecond(ghp.lastComment_ts) + "</td></tr></table>");
  		
- 		
- 		if ((ghp!=null)) {
- 	   	 	htmlTable.append("<table border=0>");
- 	   	 	htmlTable.append("<tr><td>channel:</td><td>" + ghp.channel_id + "</td></tr>");
- 	   	 	htmlTable.append("<tr><td>last check:</td><td>" + Instant.ofEpochSecond(ghp.lastCheck_ts) + "</td></tr>");
- 	   	 	htmlTable.append("<tr><td>comments sent:</td><td>" + ghp.commentsSent + "</td></tr>");
- 	   	 	htmlTable.append("<tr><td>last comment:</td><td>" + Instant.ofEpochSecond(ghp.lastComment_ts) + "</td></tr></table>");
- 		}
- 		
- 		
+   	 	htmlTable.append("<hr>");
+
+   	 	htmlTable.append("<b>Subscription rules:</b>");
+   	 	htmlTable.append("<p>");
+   	 	
+   	 	String where = "youtube_id like '" + ghp.video_id + "'";
+   	 	DtHtmlTable subscrptionTable = mySQLUtilsContainer.get_subscriptions(where, 0, 10, 1, "asc");   	 	
+   	 	htmlTable.append(subscrptionTable.htmlTable);
    	 	htmlTable.append("<hr>");
    	 	
    	 	
@@ -1255,6 +1259,108 @@ public class ServiceController {
 		return s;
     }
     
+
+// Test L7O5dUAug-I    
+    @GetMapping("/resetVideo")
+ 	public String resetVideo(@RequestParam(name = "video_id", required = false) String video_id) throws Exception {
+
+   	 	StringBuilder htmlTable = new StringBuilder();
+   	 	htmlTable.append("<table border=0 cellspacing=0 cellpadding=5><tr style=\"vertical-align: top;\"><td>");
+   	 	htmlTable.append("<a href=\"youtube_index\"><img src=\"socialgist_youtube.jpg\" alt=\"DT Youtube Home\" height=25></a>");
+   	 	htmlTable.append("</td><td width=\"30\"></td><td><h2>Youtube HBase Reset</h2></td></tr></table>");
+   	 	htmlTable.append("<p>");
+   	 	
+    	//qCyufu4Ep0Q
+ 		GvpVideo ghp = null;
+ 		if ((video_id!=null) && (!video_id.isBlank()))	{
+ 			ghp = hbaseContainer.checkVideoForExistence(video_id);
+ 		}
+
+   	 	htmlTable.append("<table border=0><tr>");
+ 		if ((ghp!=null)) {
+ 			htmlTable.append("<td>video_id:</td>");
+ 			htmlTable.append("<td><b>" + video_id + "</b></td>");
+ 			htmlTable.append("<td width=\"20%\"></td>");
+ 		}
+ 		else {
+ 	 		if ((video_id!=null) && (!video_id.isBlank()))	{
+ 	 			htmlTable.append("<td>Video with video_id of '"+video_id+"' not found in HBase.</td>");
+ 	 			htmlTable.append("<td width=\"20%\"></td>");
+ 	 		}
+ 		}
+   	 	htmlTable.append("<td valign='bottom'>" + buildRedirectionForm("resetVideo?video_id=", "", "Enter video_id", "Search") + "</td>");
+   	 	htmlTable.append("<td width=\"10%\"></td>");
+   	 	htmlTable.append("<td><a target='_blank' href=\"api_video?video_id=" + video_id + "\">Video API</a></td>");
+ 		if ((ghp!=null)) {
+			htmlTable.append("<td align=center width=\"20\">|</td>");
+ 	   	 	htmlTable.append("<td><a target='_blank' href=\"api_channel?channel_id=" + ghp.channel_id + "\">Channel API</a></td>");
+ 		}
+   	 	htmlTable.append("</tr></table>");   	 	
+ 		
+ 		if (ghp==null) {
+ 			return htmlTable.toString();
+ 		}
+ 		
+ 		
+   	 	htmlTable.append("<hr>");
+   	 	htmlTable.append("<table border=0>");
+   	 	htmlTable.append("<tr><td>channel:</td><td>" + ghp.channel_id + "</td></tr>");
+   	 	htmlTable.append("<tr><td>last check:</td><td>" + Instant.ofEpochSecond(ghp.lastCheck_ts) + "</td></tr>");
+   	 	htmlTable.append("<tr><td>comments count:</td><td>" + ghp.commentsCount + "</td></tr>");
+   	 	htmlTable.append("<tr><td>comments sent:</td><td>" + ghp.commentsSent + "</td></tr>");
+   	 	htmlTable.append("<tr><td>last comment:</td><td>" + Instant.ofEpochSecond(ghp.lastComment_ts) + "</td></tr></table>");
+   	 	htmlTable.append("<hr>");
+
+   	 	htmlTable.append("<form action='/hbase_reset_video_lastcomment' method='POST'>");
+   		htmlTable.append("<input type=\"hidden\" id=\"video_id\"  name=\"video_id\"  value=\"" + ghp.video_id + "\">");
+   		htmlTable.append("<button type=\"submit\">Reset Last Comment DateTime in Hbase</button>");
+   	 	
+		return htmlTable.toString();
+    }
+
+    
+    @PostMapping("/hbase_reset_video_lastcomment")
+    public String handleFormSubmission(@RequestParam String video_id) {
+    	if ((video_id==null) || (video_id.isBlank()))
+	 	        return "no parameter video_id";
+    	
+   	 	StringBuilder htmlTable = new StringBuilder();
+   	 	htmlTable.append("<table border=0 cellspacing=0 cellpadding=5><tr style=\"vertical-align: top;\"><td>");
+   	 	htmlTable.append("<a href=\"youtube_index\"><img src=\"socialgist_youtube.jpg\" alt=\"DT Youtube Home\" height=25></a>");
+   	 	htmlTable.append("</td><td width=\"30\"></td><td><h2>Youtube HBase Reset</h2></td></tr></table>");
+   	 	htmlTable.append("<p>");
+
+   	 	GvpVideo ghp = hbaseContainer.hBase_updateResetLastComment(video_id);
+//   	 	GvpVideo ghp = null;
+   	 	
+   	 	htmlTable.append("<table border=0><tr>");
+		htmlTable.append("<td>video_id:</td>");
+		htmlTable.append("<td><b>" + video_id + "</b></td>");
+ 		if ((ghp!=null)) {
+ 			htmlTable.append("<td> has been reset </td>");
+ 	   	 	htmlTable.append("<td width=\"10%\"></td>");
+ 	   	 	htmlTable.append("<td><a target='_blank' href=\"video_list?video_id=" + video_id + "\">Video Debug View</a></td>");
+ 	   	 	htmlTable.append("</tr></table>");   	 	
+ 		}
+ 		else {
+			htmlTable.append("<td> not found in HBase.</td>");
+	   	 	htmlTable.append("<td width=\"10%\"></td>");
+	   	 	htmlTable.append("<td><a target='_blank' href=\"api_video?video_id=" + video_id + "\">Video API</a></td>");
+	   	 	htmlTable.append("</tr></table>");   	 	
+ 			return htmlTable.toString();
+ 	 	}
+ 		
+   	 	htmlTable.append("<hr>");
+   	 	htmlTable.append("<table border=0>");
+   	 	htmlTable.append("<tr><td>channel:</td><td>" + ghp.channel_id + "</td></tr>");
+   	 	htmlTable.append("<tr><td>last check:</td><td>" + Instant.ofEpochSecond(ghp.lastCheck_ts) + "</td></tr>");
+   	 	htmlTable.append("<tr><td>comments count:</td><td>" + ghp.commentsCount + "</td></tr>");
+   	 	htmlTable.append("<tr><td>comments sent:</td><td>" + ghp.commentsSent + "</td></tr>");
+   	 	htmlTable.append("<tr><td>last comment:</td><td>" + Instant.ofEpochSecond(ghp.lastComment_ts) + "</td></tr></table>");
+   	 	htmlTable.append("<hr>");
+   	 	
+		return htmlTable.toString();
+    }    
     
     
 }

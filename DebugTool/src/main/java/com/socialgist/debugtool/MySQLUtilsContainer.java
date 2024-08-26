@@ -255,7 +255,7 @@ public class MySQLUtilsContainer  {
 					+ " WHEN type = 1 THEN CONCAT('<a target=''_blank'' href=''https://www.youtube.com/channel/', youtube_id, '''>url</a>') END AS url,  "
 					+ " CASE WHEN type = 0 THEN 'video' WHEN type = 1 THEN 'channel' END AS type,  "
 		    		+ " FROM_UNIXTIME(last_start) as last_start, FROM_UNIXTIME(last_start_scheduled) as scheduled,   " 
-		    		+ " active, date_created   "
+		    		+ " active, status, date_created   "
 		    		+ " FROM portalsdb.youtube_rules   "
 					+ " where " + where 
 					+ " order by " + order_by + " " + sort 
