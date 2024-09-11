@@ -266,7 +266,27 @@ public class MySQLUtilsContainer  {
 			return buildHtmlTableFromQuery(result);
 			
 		}
-		
+
+		public DtHtmlTable get_tokens(String where, int offset, int limit, int order_by, String sort) {
+			
+			String sql = " SELECT "	
+					+ " id as id, "
+					+ " type AS type, "	
+					+ " clientkey AS token, "	
+					+ " apiproject AS apiproject, "	
+					+ " description AS description, "	
+					+ " proxy AS proxy, "	
+					+ " isactive AS active, "	
+		    		+ " datecreated AS date_created  "
+		    		+ " FROM portalsdb.YouTubePoolClientKeys   "
+					+ " where " + where 
+					+ " order by " + order_by + " " + sort 
+					+ " limit " + limit
+					+ " offset " + offset;
+			SqlRowSet result = jdbcTemplateObject.queryForRowSet(sql);
+			
+			return buildHtmlTableFromQuery(result);
+		}
 		
 		public String premium_status() {
 
@@ -289,5 +309,33 @@ public class MySQLUtilsContainer  {
 			 }
 			SqlRowSet result = jdbcTemplateObject.queryForRowSet(sql);
 			return result;
-		}		
+		}
+		
+//**********************************************************************************************		
+//********************************* VK *********************************************************		
+//**********************************************************************************************		
+		
+
+		public DtHtmlTable get_vk_tokens(String where, int offset, int limit, int order_by, String sort) {
+			
+			String sql = " SELECT "	
+					+ " id as id, "
+					+ " projectid AS projectid, "	
+					+ " token AS token, "	
+					+ " proxy AS proxy, "	
+					+ " usagepattern AS usagepattern, "	
+					+ " description AS description, "	
+					+ " isactive AS active, "	
+		    		+ " datecreated AS date_created  "
+		    		+ " FROM portalsdb.VkTokens   "
+					+ " where " + where 
+					+ " order by " + order_by + " " + sort 
+					+ " limit " + limit
+					+ " offset " + offset;
+			SqlRowSet result = jdbcTemplateObject.queryForRowSet(sql);
+			
+			return buildHtmlTableFromQuery(result);
+		}
+		
+		
 }

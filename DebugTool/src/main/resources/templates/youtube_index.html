@@ -5,11 +5,21 @@
     <title>Index Page</title>
 </head>
 <body>
-    <h2>Youtube Debug Tools</h2>
-    <hr>
+	<table border=0 cellspacing=0 cellpadding=5>
+	<tr style="vertical-align: middle;">
+		<td><a href="\"><img src="socialgist_youtube.jpg" alt="DT Youtube Home" height=25></a></td>
+		<td width="30"></td>
+		<td><h2>Youtube Debug Tools</h2></td></tr>
+	</table>
+	<hr>
+
+	<table border=0 cellspacing=0 cellpadding=5 width="100%">
+	<tr style="vertical-align: top;">
+		<td width=30%>
+    
     YouTube Stats:  
      <ul>
-    	<li><a href="/youtube_stats">/youtube_stats</a> 	</li>
+    	<li><a href="/youtube_stats">Stats</a> 	</li>
     </ul>
     
     YouTube API: 
@@ -28,11 +38,12 @@
     	<li><a href="/rules_list?rule_id=0&offset=0&limit=100">Subscriptions by rule id</a> </li>
     	<li><a href="/rules_names?rule_name=solar&offset=0&limit=100">Subscriptions by rule name (like '%%')</a> </li>
     	<li><a href="/rules_created?sort=desc&offset=0&limit=100">Subscriptions by created_date</a> </li>
+    	<li><a href="/rules_last_start?sort=desc&offset=0&limit=100">Subscriptions by last_start</a> </li>
 		<br>    	
     	<li><a href="/channel_list?channel_id=">Channel</a> </li>
     	<li><a href="/video_list?video_id=">Video</a> 		</li>
     </ul>
-    	
+
 	Premium stats 
     	
      <ul>
@@ -40,7 +51,10 @@
     	<li><a href="/dbView?view=rs&params=0">Rules started</a>     </li>
     	<li><a href="/dbView?view=ps&params=0">Premium process current status</a>    </li>
     </ul>
-
+	
+	</td>
+	<td>
+				    	
 	Tokens usage 
 
      <ul>
@@ -49,10 +63,12 @@
     	<li><a href="/tokensView?type=5">Channels recheck</a> </li>
     </ul>
 
-	Proxy check 111
+	Proxy tools 
 
      <ul>
     	<li><a href="/check_proxy?proxyHost=&proxyPort=">Check proxy IP</a> </li>
+    	<li><a href="/yt_tokens">Assign proxy to Youtube tokens</a> (Under construction)</li>
+    	<li><a target="_blank" href="http://proxy-api-client.k8s-prod.sgdctroy.net/v1/availableips/provider/blazing/zone/1/type/shared">Blazing Proxy list</a> </li>
     </ul>
 
 	HBase view 
@@ -68,6 +84,8 @@
     	<li><a href="/resetVideo?video_id=">Reset video for recheck</a> </li>
     </ul>
     	
+		</td></tr>
+	</table>    	
     
 </body>
 </html>

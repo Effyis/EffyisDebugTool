@@ -5,7 +5,7 @@ public class TokenUseRecord {
 	public String rowKey;
 
 	public String token = "";
-	public String usagepattern;
+	public String proxy;
 	public long day_of_use;
 	
 	public String id = "";

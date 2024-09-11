@@ -9,6 +9,9 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.xml.bind.DatatypeConverter;
 
 public class GvpUtils {
@@ -94,5 +97,22 @@ public class GvpUtils {
 			else
 				return String.format(format_full, diffDays, diffHours, diffMinutes, diffSeconds);
 		}
-	
+
+		public static boolean isValidProxy(String proxy) {
+		    // Regular expression for validating IPv4 address and port
+		    String regex = "^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?):\\d{1,5}$";
+		    // Compile the regex
+		    Pattern pattern = Pattern.compile(regex);
+		    // Match the regex against the proxy string
+		    Matcher matcher = pattern.matcher(proxy);
+		    // Check if the format is correct and port is within the valid range
+		    if (matcher.matches()) {
+		        // Extract the port part
+		        String[] parts = proxy.split(":");
+		        int port = Integer.parseInt(parts[1]);
+		        return port >= 1 && port <= 65535;
+		    }
+		    return false;
+		}		
+		
 }
