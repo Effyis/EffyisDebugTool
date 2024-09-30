@@ -42,13 +42,13 @@ import com.socialgist.debugtool.items.DtHtmlYoutubeApiResult;
 import com.socialgist.debugtool.model.Cell;
 import com.socialgist.debugtool.model.JsonData;
 import com.socialgist.debugtool.model.Row;
-import com.socialgist.gvp.utils.HBaseContainer;
-import com.socialgist.gvp.utils.StatsContainer;
-import com.socialgist.gvp.utils.items.GvpChannel;
-import com.socialgist.gvp.utils.items.GvpComment;
-import com.socialgist.gvp.utils.items.GvpVideo;
-import com.socialgist.gvp.utils.items.PremiumSubscription;
-import com.socialgist.gvp.utils.items.StatsTimePeriod;
+import com.socialgist.debugtool.utils.HBaseContainer;
+import com.socialgist.debugtool.utils.StatsContainer;
+import com.socialgist.debugtool.utils.items.GvpChannel;
+import com.socialgist.debugtool.utils.items.GvpComment;
+import com.socialgist.debugtool.utils.items.GvpVideo;
+import com.socialgist.debugtool.utils.items.PremiumSubscription;
+import com.socialgist.debugtool.utils.items.StatsTimePeriod;
 
 
 @RestController

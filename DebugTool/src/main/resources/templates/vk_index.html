@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Index Page</title>
 </head>
-<body>
 	
 	<table border=0 cellspacing=0 cellpadding=0>
 	<tr style="vertical-align: middle;">
@@ -21,19 +20,34 @@
     </ul>
     
     VK API: 
-    
-     <ul>
-    	<li><a href="/channel?channel_id=">/channel</a> 	</li>
-    	<li><a href="/playlist?channel_id=">/playlist</a>       </li>
-    	<li><a href="/video?video_id=">/video</a>               </li>
-    </ul>
-    
+
+	<table border=0 cellspacing=0 cellpadding=0>
+		<tr style="vertical-align: middle;">
+		<td>
+     		<ul>
+    			<li><a href="/api_wall?wall_id=">Wall</a></li>
+    			<li><a href="/api_wall_posts?wall_id=">Wall Posts</a></li>
+		    	<li><a href="/api_post?post_id=">Post</a></li>
+		    	<li><a href="/api_comments?post_id=">Comments</a></li>
+    		</ul>
+		</td>
+		<td>
+			&nbsp;&nbsp;&nbsp;
+		</td>
+		<td>
+			/groups.getById || /users.get  <br>
+    		/wall.get 		<br>
+    		/wall.getById		<br>
+    		/wall.getComments
+		</td>
+		</tr>
+	</table>
 
 	Collector quality check
 	
      <ul>
-    	<li><a href="/channel_list?channel_id=">Channel</a> </li>
-    	<li><a href="/video_list?/video_id=">Video</a> 		</li>
+    	<li><a href="/wall_list?wall_id=">Wall</a> </li>
+    	<li><a href="/post_list?post_id=">Post</a> 		</li>
     </ul>
     	
 	Premium stats 
@@ -64,8 +78,8 @@
 	HBase view 
     	
      <ul>
-    	<li><a href="/hbaseView?view=CH_LIST&params=ytc.0000">channels (ytc.0000)</a> </li>
-    	<li><a href="/hbaseView?view=V_LIST&params=youtube.0000">videos (youtube.0000)</a> </li>
+    	<li><a href="/vk_wall_hbaseview?start=wall.0000">walls(wall.0000)</a> </li>
+    	<li><a href="/vk_wall_ref_hbaseview?start=wallr.0000">walls refs(wallr.0000)</a> </li>
     </ul>
     	
     

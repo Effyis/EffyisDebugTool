@@ -15,9 +15,9 @@ import com.socialgist.debugtool.items.DtHtmlTable;
 import com.socialgist.debugtool.model.Cell;
 import com.socialgist.debugtool.model.JsonData;
 import com.socialgist.debugtool.model.Row;
-import com.socialgist.gvp.utils.HBaseContainer;
-import com.socialgist.gvp.utils.MySQLContainer;
-import com.socialgist.gvp.utils.items.PremiumSubscription;
+import com.socialgist.debugtool.utils.HBaseContainer;
+import com.socialgist.debugtool.utils.MySQLContainer;
+import com.socialgist.debugtool.utils.items.PremiumSubscription;
 
 import java.io.IOException;
 import java.sql.ResultSetMetaData;

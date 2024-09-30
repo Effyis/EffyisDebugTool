@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.socialgist.debugtool.items.DtHtmlTable;
-import com.socialgist.gvp.utils.HBaseContainer;
-import com.socialgist.gvp.utils.StatsContainer;
-import com.socialgist.gvp.utils.items.GvpUtils;
-import com.socialgist.gvp.utils.items.GvpVideo;
+import com.socialgist.debugtool.utils.HBaseContainer;
+import com.socialgist.debugtool.utils.StatsContainer;
+import com.socialgist.debugtool.utils.items.GvpUtils;
+import com.socialgist.debugtool.utils.items.GvpVideo;
 
 import jakarta.servlet.http.HttpServletResponse;
 

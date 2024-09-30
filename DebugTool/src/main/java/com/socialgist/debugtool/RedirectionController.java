@@ -19,9 +19,9 @@ import com.socialgist.debugtool.model.Cell;
 import com.socialgist.debugtool.model.Column;
 import com.socialgist.debugtool.model.JsonData;
 import com.socialgist.debugtool.model.Row;
-import com.socialgist.gvp.utils.HBaseContainer;
-import com.socialgist.gvp.utils.items.GvpVideo;
-import com.socialgist.gvp.utils.items.StatsTimePeriod;
+import com.socialgist.debugtool.utils.HBaseContainer;
+import com.socialgist.debugtool.utils.items.GvpVideo;
+import com.socialgist.debugtool.utils.items.StatsTimePeriod;
 
 
 @Controller

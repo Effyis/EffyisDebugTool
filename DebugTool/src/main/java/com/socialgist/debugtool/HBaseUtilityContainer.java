@@ -6,6 +6,7 @@ import java.io.InterruptedIOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -34,10 +35,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.socialgist.gvp.utils.HBaseContainer;
-import com.socialgist.gvp.utils.items.GvpChannel;
-import com.socialgist.gvp.utils.items.GvpVideo;
-import com.socialgist.gvp.utils.items.StatsTimePeriod;
+import com.socialgist.debugtool.utils.HBaseContainer;
+import com.socialgist.debugtool.utils.items.GvpChannel;
+import com.socialgist.debugtool.utils.items.GvpVideo;
+import com.socialgist.debugtool.utils.items.StatsTimePeriod;
+import com.socialgist.debugtool.utils.items.VkWall;
+import com.socialgist.debugtool.utils.items.VkWallRef;
 
 @Component
 //@ManagedResource(objectName = "Effyis DBUtils:name=HBaseContainer")
@@ -248,6 +251,44 @@ public class HBaseUtilityContainer  {
          
 		return map;		
 	}
+
+//*************************************************************************************************
 	
 	
+	public Map<String, VkWall> getHBaseWalls(String start_hbase_scan) throws IOException 
+	{
+		
+       	Map<String, VkWall> map = new LinkedHashMap<>();
+		int i = 0;
+	    Scan scan = new Scan().withStartRow(Bytes.toBytes(start_hbase_scan)).withStopRow(Bytes.toBytes("walls.X"));		
+         try (ResultScanner scanner = hbaseContainer.getScanner_TableWalls(scan)) {
+             for (Result rr : scanner) {
+       	       String rowKey = new String(rr.getRow());
+       	       VkWall vkWall = new VkWall(rr);
+      	       map.put(rowKey, vkWall);
+      	       i++;
+      	       if (i>100) break;
+             }
+         }
+         
+		return map;		
+	}
+	
+	public Map<String, VkWall> getHBaseWallsRef(String start_hbase_scan) throws IOException 
+	{
+       	Map<String, VkWall> map = new LinkedHashMap<>();
+		int i = 0;
+	    Scan scan = new Scan().withStartRow(Bytes.toBytes(start_hbase_scan)).withStopRow(Bytes.toBytes("wallref.X"));		
+         try (ResultScanner scanner = hbaseContainer.getScanner_TableWalls(scan)) {
+             for (Result rr : scanner) {
+       	       String rowKey = new String(rr.getRow());
+       	       String wall_id = rowKey.split("\\.")[2];
+       	       VkWall vkWall = hbaseContainer.hBase_getWall("wall." + wall_id);
+      	       map.put(rowKey, vkWall);
+      	       i++;
+      	       if (i>100) break;
+             }
+         }
+		return map;		
+	}
 }

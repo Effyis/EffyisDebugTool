@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import com.socialgist.gvp.utils.items.GvpUtils;
-import com.socialgist.gvp.utils.items.StatsTimePeriod;
+import com.socialgist.debugtool.utils.items.GvpUtils;
+import com.socialgist.debugtool.utils.items.StatsTimePeriod;
 
 public class JsonData {
     private String cfTitle;

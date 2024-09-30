@@ -1,16 +1,17 @@
-package com.socialgist.debugtool;
+package com.socialgist.debugtool.utils;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.socialgist.debugtool.utils.DictionaryContainer;
-import com.socialgist.debugtool.utils.HBaseContainer;
-import com.socialgist.debugtool.utils.MySQLContainer;
-import com.socialgist.debugtool.utils.StatsContainer;
-import com.socialgist.debugtool.utils.TokensPoolContainer;
+import com.socialgist.language_detector.LdContainer;
 
-@Configuration
-public class GvpUtilsConfig {
+//@Configuration
+public class GvpConfig {
+
+		@Bean
+		public GvpRepository  gvpUtilsContainer() {
+			return new GvpRepository (); 
+		}	
 
 		@Bean
 		public MySQLContainer  mySQLContainer() {
@@ -21,19 +22,21 @@ public class GvpUtilsConfig {
 		public HBaseContainer  hbaseContainer() {
 		    return new HBaseContainer (); 
 		}
-		
-//		@Bean
-//		public DictionaryContainer  dictionaryContainer() {
-//		    return new DictionaryContainer (); 
-//		}
 
 		@Bean
 		public TokensPoolContainer  tokensPoolContainer() {
 		    return new TokensPoolContainer (); 
 		}
-		
+
+		@Bean
+		public LdContainer ldContainer() {
+			return new LdContainer();
+		}
+
 		@Bean
 		public StatsContainer statsContainer() {
 			return new StatsContainer();
 		}
+		
+		
 }

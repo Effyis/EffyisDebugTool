@@ -8,25 +8,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.socialgist.gvp.utils.DictionaryContainer;
-import com.socialgist.gvp.utils.HBaseContainer;
-import com.socialgist.gvp.utils.MySQLContainer;
-import com.socialgist.gvp.utils.TokensPoolContainer;
+import com.socialgist.debugtool.utils.DictionaryContainer;
+import com.socialgist.debugtool.utils.HBaseContainer;
+import com.socialgist.debugtool.utils.MySQLContainer;
+import com.socialgist.debugtool.utils.TokensPoolContainer;
 
 @Component
 public class CnRepository {
 
 	@Value("${youtube_token:}")   
 	String youtube_token;
+	@Value("${vk_token:}")   
+	String vk_token;
 	
 	@Autowired
 	MySQLContainer mySQLContainer;
 	@Autowired
 	HBaseContainer hbaseContainer;
-	@Autowired
-	DictionaryContainer dictionaryContainer;
-	@Autowired
-	TokensPoolContainer tokensPoolContainer;
+//	@Autowired
+//	DictionaryContainer dictionaryContainer;
+//	@Autowired
+//	TokensPoolContainer tokensPoolContainer;
 
 	@Autowired
 	MySQLUtilsContainer mySQLUtilsContainer;
@@ -41,8 +43,8 @@ public class CnRepository {
     public void init() throws Exception {
   		mySQLContainer.init();
   		hbaseContainer.init();
-  		dictionaryContainer.init();
-  		tokensPoolContainer.init();
+//  		dictionaryContainer.init();
+//  		tokensPoolContainer.init();
   		
   		mySQLUtilsContainer.init();
   		httpContainer.init();  		

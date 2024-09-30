@@ -10,13 +10,13 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.socialgist.debugtool.items.DtHtmlYoutubeApiResult;
-import com.socialgist.gvp.utils.HBaseContainer;
-import com.socialgist.gvp.utils.MySQLContainer;
-import com.socialgist.gvp.utils.items.GvpChannel;
-import com.socialgist.gvp.utils.items.GvpComment;
-import com.socialgist.gvp.utils.items.GvpUtils;
-import com.socialgist.gvp.utils.items.GvpVideo;
-import com.socialgist.gvp.utils.items.PremiumSubscription;
+import com.socialgist.debugtool.utils.HBaseContainer;
+import com.socialgist.debugtool.utils.MySQLContainer;
+import com.socialgist.debugtool.utils.items.GvpChannel;
+import com.socialgist.debugtool.utils.items.GvpComment;
+import com.socialgist.debugtool.utils.items.GvpUtils;
+import com.socialgist.debugtool.utils.items.GvpVideo;
+import com.socialgist.debugtool.utils.items.PremiumSubscription;
 
 import jakarta.xml.bind.DatatypeConverter;
 
